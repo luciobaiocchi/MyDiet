@@ -1,5 +1,7 @@
 # Progetto-DB
+
 ## Programma per la gestione di diete
+
 L’obiettivo del progetto è realizzare un programma che permette il salvataggio e organizzazione di
 piani alimentari personalizzati.
 
@@ -23,7 +25,7 @@ visualizzare tutti i suoi clienti associati al loro obbiettivo, alla dieta perso
 aggiornamenti datati. In questa parte potrà anche aggiornare una dieta in base all’andamento dei
 progressi e in funzione dell’obbiettivo del cliente.
 
-### Le funzionalità offerte dalla programma sono le seguenti:
+### Le funzionalità offerte dalla programma sono le seguenti
 
 1. Visualizzazione della dieta da parte di un cliente
 2. Visualizzazione dell’elenco dei nutrizionisti da parte di un utente cliente
