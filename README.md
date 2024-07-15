@@ -1,41 +1,41 @@
-# Progetto-DB
+Email dei componenti:
 
-## Programma per la gestione di diete
+andrea.decarli2@studio.unibo.it
+luca.camillini@studio.unibo.it
+lucio.baiocchi@studio.unibo.it
+mattia.morri6@studio.unibo.it
 
-L’obiettivo del progetto è realizzare un programma che permette il salvataggio e organizzazione di
-piani alimentari personalizzati.
 
-Ogni utente cliente è registrato con nome utente e password. Può scegliere di affidarsi ad un
-nutrizionista fra quelli disponibili e iniziare un piano alimentare, dopodiché potrà visualizzare la
-propria dieta in uno spazio a lui riservato e caricare aggiornamenti sulla propria condizione,
-composti dal peso attuale circonferenza del punto vita braccia e gambe e un messaggio opzionale.
+Il gruppo si pone come obiettivo quello di realizzare un videogioco che simula la vita di un bodybuilder.
+L’obiettivo del giocatore è di raggiungere il livello massimo per ogni gruppo muscolare (gambe, petto, schiena). Per fare ciò dovrà bilanciare le tre statistiche che portano alla vittoria o sconfitta: stamina, umore e massa. Il guadagno monetario, con il quale il giocatore comprerà gli alimenti e gli esercizi in palestra, sono gestiti da minigiochi. Avrà a disposizione un inventario, dove tenere gli alimenti.
 
-Ogni dieta associata ad un singolo cliente avrà una quota calorica e il totale dei macro-nutrienti
-(proteine, carboidrati, grassi). Una dieta è composta da una scheda per ogni giorno della settimana,
-nella quale sono salvati i pasti del giorno che possono variare di giorno in giorno. Un pasto è
-composto da un insieme di alimenti con relativo peso.
 
-Nel DB vengono anche salvati gli utenti nutrizionisti, che possono essere specializzati in un
-ambito preciso: dimagrimento, alimentazione sportiva, aumento di massa muscolare, etc… Ognuno
-dei quali ha anche associato nel proprio profilo pubblico delle recensioni lasciate dai clienti (voto
-composto da 1 a 5 stelle, e una valutazione scritta opzionale).
+FUNZIONALITÀ MINIMALI RITENUTE OBBLIGATORIE:
+- implementazione di 3 mappe dei rispettivi edifici + mappe generale della città
+- implementazione minigiochi
+- inventario con alimenti consumabili e gestione denaro
+- oggetti interagibili all’interno degli edifici
+- gestione statistiche personaggio
+- game over
+- gestione grafica totale
 
-Esiste anche una parte riservata, visibile solo all’utente nutrizionista, nella quale quest’ultimo può
-visualizzare tutti i suoi clienti associati al loro obbiettivo, alla dieta personalizzata e ai vari
-aggiornamenti datati. In questa parte potrà anche aggiornare una dieta in base all’andamento dei
-progressi e in funzione dell’obbiettivo del cliente.
+Funzionalità opzionali:
+- salvataggio partite terminate
+- aggiunta imprevisti che modificano statistiche
+- scelta del livello di difficoltà a inizio gioco
+- incremento statistiche proporzionale al completamento del minigioco
 
-### Le funzionalità offerte dalla programma sono le seguenti
+“Challenge” principali:
+- implementazione grafica mappa generale e sottomappe
+- collaborazione dei vari componenti del gruppo
+- rispetto del paradigma MVC
 
-1. Visualizzazione della dieta da parte di un cliente
-2. Visualizzazione dell’elenco dei nutrizionisti da parte di un utente cliente
-3. Inserire i vari aggiornamenti da parte di un utente cliente con relativa data e messaggio descrittivo
-4. Visualizzare tutti i clienti di un nutrizionista
-5. Modificare pasti e diete di ogni cliente
-6. Visualizzare storico dei progressi di un cliente
-7. Inserire nuovi alimenti nel catalogo per rendere più varia una dieta
+Suddivisione del lavoro:
 
-Sarà possibile consultare informazioni aggregate:
+De Carli Andrea: creazione di tutte le 4 mappe e gestione oggetti interagibili all’interno di esse
 
-1. Visualizzare i 10 migliori nutrizionisti (quelli con la media di stelle più alta)
-2. Ottenere una lista con i nutrizionisti che hanno portato all’obiettivo almeno il 50% dei clienti
+Camillini Luca: creazione minigiochi interattivi relativi alla palestra e gestione del game over
+
+Morri Mattia: creazione minigioco banca e inventario con annessa gestione di quest’ultimo
+
+Baiocchi Lucio: creazione personaggio principale con relativo movimento e bilanciamento delle statistiche
