@@ -1,4 +1,4 @@
-package gymlife.application;
+package mydiet.application;
 
 
 /**
@@ -16,5 +16,6 @@ public final class MyDiet {
      */
     public static void main(final String[] args) {
         System.out.println("Hello, world!");
+
     }
 }
