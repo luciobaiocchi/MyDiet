@@ -25,6 +25,7 @@ dependencies {
     //testImplementation("org.mockito:mockito-core:5.11.0")
     //testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     implementation("commons-codec:commons-codec:1.16.1")
+    implementation ("mysql:mysql-connector-java:8.0.33")
     //implementation("org.mariadb.jdbc:mariadb-java-client:3.3.3")
     //implementation("org.slf4j:slf4j-simple:2.0.13")
     //View
