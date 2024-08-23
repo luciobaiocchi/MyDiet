@@ -1,9 +1,12 @@
 package unibo.mydiet.view;
+import unibo.mydiet.controller.Controller;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class LoginPanel extends JPanel {
 
+    private Controller controller;
     // Componenti per il login
     private JTextField usernameField;
     private JPasswordField passwordField;
@@ -23,7 +26,8 @@ public class LoginPanel extends JPanel {
     private Color buttonColor = new Color(0, 173, 181);
     private Color buttonTextColor = new Color(34, 40, 49);
 
-    public LoginPanel() {
+    public LoginPanel(final Controller controller) {
+        this.controller = controller;
         setLayout(new CardLayout());
         setBackground(backgroundColor);
 
@@ -40,6 +44,7 @@ public class LoginPanel extends JPanel {
         // Mostriamo il pannello di login come predefinito
         CardLayout cl = (CardLayout) getLayout();
         cl.show(this, "Login");
+
     }
 
     // Metodo per creare il pannello di login

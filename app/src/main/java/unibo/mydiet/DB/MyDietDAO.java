@@ -2,18 +2,19 @@ package unibo.mydiet.DB;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class MyDietDAO implements AutoCloseable {
-    private final String DB_URL = "jdbc:mysql://localhost:3306/SCHEMA_ER_definitivo_logico?serverTimezone=UTC&useSSL=true";
-    private final String USER = "root";
-    private final String PASS = "123456";
-    private Connection connection;
+    private final Connection connection;
 
     public MyDietDAO() {
         try {
             // Carica il driver JDBC (necessario solo per versioni precedenti a JDBC 4.0)
 
+            String DB_URL = "jdbc:mysql://localhost:3306/MyDiet?serverTimezone=UTC";
+            String USER = "root";
+            String PASS = "123456";
             this.connection = DriverManager.getConnection(DB_URL, USER, PASS);
         } catch (SQLException e) {
             throw new RuntimeException("Error connecting to the database", e);
@@ -27,22 +28,54 @@ public class MyDietDAO implements AutoCloseable {
     }
 
 
-//    // 1. Registrazione di un nuovo utente
-//    public boolean registerUser(final String nome,
-//                                final String cognome,
-//                                final String username,
-//                                final String password) throws SQLException {
-//        String query = "INSERT INTO ACCOUNT (Nome, Cognome, Username, Password) VALUES (?, ?, ?, ?)";
-//        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-//            stmt.setString(1, nome);
-//            stmt.setString(2, cognome);
-//            stmt.setString(3, username);
-//            stmt.setString(4, password);
-//        }catch (SQLException ignored){
-//            return false;
-//        }
-//        return true;
-//    }
+    // 1. Registrazione di un nuovo utente
+    public boolean registerClient(final String nome,
+                                    final String cognome,
+                                    final String username,
+                                    final String password,
+                                    final int numeroTelefono,
+                                    final int eta,
+                                    final String mail,
+                                    final char sesso){
+
+        String query = "INSERT INTO CLIENTE (Numero_di_telefono, Mail, Eta, Username, " +
+                "Nome_, Cognome, Password, Sesso) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, String.valueOf(numeroTelefono));
+            stmt.setString(2, mail);
+            stmt.setString(3, String.valueOf(eta));
+            stmt.setString(4, username);
+            stmt.setString(5, nome);
+            stmt.setString(6, cognome);
+            stmt.setString(7, password);
+            stmt.setString(8, String.valueOf(sesso));
+
+            int rowsAffected = stmt.executeUpdate();  // Esegui l'operazione di inserimento
+        }catch (SQLException ignored){
+            return false;
+        }
+        return true;
+    }
+
+    // 1. Registrazione di un nuovo utente
+    public boolean registerNutrizionist(final String nome,
+                                  final String cognome,
+                                  final String username,
+                                  final String password) throws SQLException {
+        String query =
+                "INSERT INTO NUTRIZIONISTA (Specializzazione, Numero_di_telefono, Mail, Username, Nome_, " +
+                "Cognome, Password, Sesso, Percentuale_soddisfatti, Media_stelle) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, nome);
+            stmt.setString(2, cognome);
+            stmt.setString(3, username);
+            stmt.setString(4, password);
+        }catch (SQLException ignored){
+            return false;
+        }
+        return true;
+    }
 
 //    // 2. Accesso di un utente
 //    public boolean login(final String username, final String password) throws SQLException {

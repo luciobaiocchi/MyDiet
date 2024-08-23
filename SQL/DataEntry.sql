@@ -63,6 +63,7 @@ VALUES
 INSERT INTO CLIENTE (Numero_di_telefono, Mail, Eta, Username, Nome_, Cognome, Password, Sesso)
 VALUES
 	(0, 'admin.com', 0, 'admin', 'nome', 'cognome', '1234', 'M'),
+	(456782012, 'elisascalabrini@gmail.com', 21, 'ellister03', 'Elisa', 'Scalabrini', 'ellister123', 'F'),
     (456789012, 'cliente4@example.com', 32, 'cliente4', 'Giacomo', 'Verdi', 'password123', 'M'),
     (567890123, 'cliente5@example.com', 27, 'cliente5', 'Elisa', 'Rossi', 'password456', 'F'),
     (678901234, 'cliente6@example.com', 31, 'cliente6', 'Roberto', 'Bianchi', 'password789', 'M'),
@@ -117,8 +118,8 @@ INSERT INTO OBBIETTIVO (Username, Data_raggiungimento, Raggiunto, Descrizione, P
 VALUES
     ('cliente4', '2024-01-15', 'S', 'Perdita di peso iniziale', 80, 90, 30, 50),
     ('cliente5', '2024-02-20', 'N', 'Aumento della massa muscolare', 70, 85, 35, 55),
-    ('cliente6', '2024-03-10', 'S', 'Riduzione della circonferenza vita', 75, 88, 32, 52),
-    ('cliente7', '2024-04-05', 'S', 'Miglioramento della forma fisica', 72, 87, 31, 51),
+    ('cliente6', '2024-03-10', 'N', 'Riduzione della circonferenza vita', 75, 88, 32, 52),
+    ('cliente7', '2024-04-05', 'N', 'Miglioramento della forma fisica', 72, 87, 31, 51),
     ('cliente8', '2024-05-12', 'N', 'Aumento della forza muscolare', 78, 90, 33, 53),
     ('cliente9', '2024-06-18', 'S', 'Perdita di peso generale', 76, 89, 34, 54),
     ('cliente10', '2024-07-22', 'N', 'Incremento della resistenza', 74, 86, 30, 50),
