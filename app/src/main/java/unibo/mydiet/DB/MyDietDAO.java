@@ -1,9 +1,6 @@
 package unibo.mydiet.DB;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class MyDietDAO implements AutoCloseable {
     private final Connection connection;
@@ -50,46 +47,63 @@ public class MyDietDAO implements AutoCloseable {
             stmt.setString(7, password);
             stmt.setString(8, String.valueOf(sesso));
 
-            int rowsAffected = stmt.executeUpdate();  // Esegui l'operazione di inserimento
-        }catch (SQLException ignored){
+            stmt.executeUpdate();  // Esegui l'operazione di inserimento
+        }catch (SQLException e){
+            e.printStackTrace();
             return false;
         }
         return true;
     }
 
     // 1. Registrazione di un nuovo utente
-    public boolean registerNutrizionist(final String nome,
-                                  final String cognome,
-                                  final String username,
-                                  final String password) throws SQLException {
+    public boolean registerNutrizionist(final String specializzazione,
+                                        final String nome,
+                                        final String cognome,
+                                        final String username,
+                                        final String password,
+                                        final int numeroTelefono,
+                                        final int eta,
+                                        final String mail,
+                                        final char sesso,
+                                        final int percentualeSoddisfatti,
+                                        final int mediaStelle) {
         String query =
                 "INSERT INTO NUTRIZIONISTA (Specializzazione, Numero_di_telefono, Mail, Username, Nome_, " +
                 "Cognome, Password, Sesso, Percentuale_soddisfatti, Media_stelle) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, nome);
-            stmt.setString(2, cognome);
-            stmt.setString(3, username);
-            stmt.setString(4, password);
-        }catch (SQLException ignored){
+            stmt.setString(1, specializzazione);
+            stmt.setString(2, String.valueOf(numeroTelefono));
+            stmt.setString(3, mail);
+            stmt.setString(4, username);
+            stmt.setString(5, nome);
+            stmt.setString(6, cognome);
+            stmt.setString(7, password);
+            stmt.setString(8, String.valueOf(sesso));
+            stmt.setString(9, String.valueOf(percentualeSoddisfatti));
+            stmt.setString(10, String.valueOf(mediaStelle));
+
+            stmt.executeUpdate();  // Esegui l'operazione di inserimento
+        }catch (SQLException e){
+            e.printStackTrace();
             return false;
         }
         return true;
     }
 
-//    // 2. Accesso di un utente
-//    public boolean login(final String username, final String password) throws SQLException {
-//        String query = "SELECT Password FROM ACCOUNT WHERE Username = ? ";
-//        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-//            stmt.setString(1, username);
-//            try (ResultSet rs = stmt.executeQuery()) {
-//                rs.next();
-//                return rs.getString("Password").equals(password);
-//            }catch (SQLException e){
-//                return false;
-//            }
-//        }
-//    }
+    // 2. Accesso di un utente
+    public boolean loginClient(final String username, final String password) throws SQLException {
+        String query = "SELECT Password FROM CLIENTE WHERE Username = ? ";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, username);
+            try (ResultSet rs = stmt.executeQuery()) {
+                rs.next();
+                return rs.getString("Password").equals(password);
+            }catch (SQLException e){
+                return false;
+            }
+        }
+    }
 
 //    // Account type
 //    public AccountType getAccountType(final String username) throws SQLException {

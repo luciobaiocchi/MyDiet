@@ -21,10 +21,10 @@ public class LoginPanel extends JPanel {
 
     // Colorazione moderna
     private Color backgroundColor = new Color(34, 40, 49);
-    private Color panelColor = new Color(57, 62, 70);
-    private Color textColor = new Color(238, 238, 238);
-    private Color buttonColor = new Color(0, 173, 181);
-    private Color buttonTextColor = new Color(34, 40, 49);
+    private Color panelColor = new Color(0, 15, 40);
+    private Color textColor = new Color(200, 200, 200);
+    private Color buttonColor = new Color(136, 105, 136);
+    private Color buttonTextColor = new Color(237, 193, 141, 255);
 
     public LoginPanel(final Controller controller) {
         this.controller = controller;
@@ -35,7 +35,8 @@ public class LoginPanel extends JPanel {
         JPanel loginPanel = createLoginPanel();
 
         // Pannello di registrazione
-        JPanel registerPanel = createRegisterPanel();
+        final JPanel registerPanel = createRegisterPanel();
+
 
         // Aggiungiamo i pannelli al CardLayout
         add(loginPanel, "Login");
@@ -57,7 +58,7 @@ public class LoginPanel extends JPanel {
 
         // Aggiungi immagine
         JLabel imageLabel = new JLabel();
-        ImageIcon imageIcon = new ImageIcon("app/src/main/resources/unibo/mydiet/images/logo_MyDiet.jpeg"); // Path dell'immagine
+        ImageIcon imageIcon = new ImageIcon("app/src/main/resources/unibo/mydiet/images/logo_MyDiet_dark.jpeg"); // Path dell'immagine
         Image image = imageIcon.getImage(); // Ottieni l'immagine
         Image scaledImage = image.getScaledInstance(400, 400, Image.SCALE_SMOOTH); // Scala l'immagine
         imageIcon = new ImageIcon(scaledImage); // Converti l'immagine scalata in ImageIcon
@@ -72,10 +73,32 @@ public class LoginPanel extends JPanel {
 
         // Campi di testo
         usernameField = new JTextField(15);
+        usernameField.setFont(Constants.appFont);
         passwordField = new JPasswordField(15);
+        passwordField.setFont(Constants.appFont);
         loginButton = createStyledButton("Login");
-        registerButton = createStyledButton("Register");
+        loginButton.setFont(Constants.appFont);
+        loginButton.setOpaque(true);
+        loginButton.addActionListener(e -> {
+            String username = usernameField.getText();
+            String password = String.copyValueOf(passwordField.getPassword());
 
+            if (authenticateCli(username, password)) {
+                // Autenticazione riuscita
+                System.out.println("Login riuscito");
+            } else {
+                // Autenticazione fallita
+                System.out.println("Login fallito");
+            }
+        });
+
+        registerButton = createStyledButton("Register");
+        registerButton.setOpaque(true);
+        registerButton.setFont(Constants.appFont);
+        registerButton.addActionListener(e -> {
+            CardLayout cl = (CardLayout) getLayout();
+            cl.show(this, "Register");
+        });
         styleTextField(usernameField);
         styleTextField(passwordField);
 
@@ -84,7 +107,9 @@ public class LoginPanel extends JPanel {
 
         gbc.gridx = 0;
         gbc.gridy = 1;
-        panel.add(createStyledLabel("Username:"), gbc);
+        JLabel usernameLabel = createStyledLabel("Username:");
+        usernameLabel.setFont(Constants.appFont);
+        panel.add(usernameLabel, gbc);
 
         gbc.gridx = 1;
         gbc.gridy = 1;
@@ -92,7 +117,10 @@ public class LoginPanel extends JPanel {
 
         gbc.gridx = 0;
         gbc.gridy = 2;
-        panel.add(createStyledLabel("Password:"), gbc);
+        JLabel passwordLabel = createStyledLabel("Password:");
+        passwordLabel.setFont(Constants.appFont);
+        panel.add(passwordLabel, gbc);
+
 
         gbc.gridx = 1;
         gbc.gridy = 2;
@@ -157,16 +185,22 @@ public class LoginPanel extends JPanel {
         return panel;
     }
 
-    // Metodo di autenticazione (stub, da implementare)
-    private boolean authenticate(String username, String password) {
-        // Implementa la logica per verificare le credenziali dell'utente
-        return username.equals("admin") && password.equals("password");
+    // Metodo di autenticazione
+    private boolean authenticateCli(final String username, final String password) {
+        return controller.loginClient(username, password);
+    }
+    // Metodo di registrazione
+    private boolean registerCli(final String username, final String password) {
+        return false;
     }
 
-    // Metodo di registrazione (stub, da implementare)
-    private boolean register(String username, String password) {
-        // Implementa la logica per registrare un nuovo utente
-        return !username.equals("admin");  // Simula un controllo di esistenza
+    // Metodo di autenticazione
+    private boolean authenticateNut(final String username, final String password) {
+        return false;
+    }
+    // Metodo di registrazione
+    private boolean registerNut(final String username, final String password) {
+        return false;
     }
 
     // Metodo per stilizzare un JLabel
@@ -181,7 +215,7 @@ public class LoginPanel extends JPanel {
         textField.setBackground(new Color(34, 40, 49));
         textField.setForeground(textColor);
         textField.setCaretColor(textColor);
-        textField.setBorder(BorderFactory.createLineBorder(new Color(0, 173, 181), 1));
+        textField.setBorder(BorderFactory.createLineBorder(buttonColor, 2));
     }
 
     // Metodo per stilizzare un JButton

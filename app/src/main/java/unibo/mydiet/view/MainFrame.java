@@ -19,6 +19,6 @@ public class MainFrame extends JFrame  implements unibo.mydiet.view.api.MainFram
     public void loadLoginPanel() {
         this.add(loginPanel);
         loginPanel.setVisible(true);
-        controller.registerClient("nome", "cognome", "username", "password", 123456789, 20, "mail", 'M');
+
     }
 }
