@@ -4,6 +4,8 @@ import unibo.mydiet.model.users.Client;
 import unibo.mydiet.model.users.Nutrizionist;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MyDietDAO implements AutoCloseable {
     private final Connection connection;
@@ -165,6 +167,33 @@ public class MyDietDAO implements AutoCloseable {
             return null;
         }
         return null;
+    }
+
+    // Client Info
+    public List<Nutrizionist> getNutList() throws SQLException {
+        final String query = "SELECT * FROM NUTRIZIONISTA";
+        List<Nutrizionist> nutrizionists = new ArrayList<>();
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {;
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    nutrizionists.add(new Nutrizionist(
+                            rs.getString("Specializzazione"),
+                            rs.getString("Nome_"),
+                            rs.getString("Cognome"),
+                            rs.getString("Username"),
+                            rs.getString("Password"),
+                            rs.getString("Numero_di_telefono"),
+                            rs.getString("Mail"),
+                            rs.getString("Sesso"),
+                            rs.getString("Percentuale_soddisfatti"),
+                            rs.getString("Media_stelle")));
+                }
+            }
+        }
+        catch (SQLException e){
+            return null;
+        }
+        return nutrizionists;
     }
 
 //    // Account

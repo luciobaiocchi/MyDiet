@@ -4,6 +4,7 @@ import unibo.mydiet.DB.MyDietDAO;
 import unibo.mydiet.model.users.*;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 
 public class Controller {
@@ -81,6 +82,14 @@ public class Controller {
             return dao.loginNut(username, password);
         } catch (SQLException e) {
             return false;
+        }
+    }
+
+    public List<Nutrizionist> getNutrizionists() {
+        try {
+            return dao.getNutList();
+        } catch (SQLException e) {
+            return null;
         }
     }
 

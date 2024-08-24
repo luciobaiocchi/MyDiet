@@ -7,9 +7,19 @@ import unibo.mydiet.model.users.UserType;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
+import java.util.List;
 
 public abstract class HomePage extends JPanel {
     final JPanel centerPanel = new JPanel();
+    private final JButton button1 = createStyledButton("bottone 1");
+    private final JButton button2 = createStyledButton("bottone 2");
+    private final JButton button3 = createStyledButton("bottone 3");
+    private final JButton button4 = createStyledButton("bottone 4");
+    private final JButton button5 = createStyledButton("bottone 5");
+    private final JButton button6 = createStyledButton("bottone 6");
+    private final List<JButton> buttons = List.of(button1, button2, button3, button4, button5, button6);
+
 
     public abstract void addTable();
 
@@ -40,27 +50,27 @@ public abstract class HomePage extends JPanel {
         // Pannello sinistro (West) per i pulsanti di navigazione
         JPanel westPanel = new JPanel(new GridLayout(3, 1, 10, 10));
         westPanel.setBackground(Constants.BG_COLOR);
-        JButton datiPersonaliButton = createStyledButton("Dati personali");
-        datiPersonaliButton.setFont(Constants.appFont);
-        JButton visualizzaObiettivoButton = createStyledButton("Visualizza obiettivo");
-        visualizzaObiettivoButton.setFont(Constants.appFont);
-        JButton modificaPasswordButton = createStyledButton("Modifica password");
-        modificaPasswordButton.setFont(Constants.appFont);
 
-        westPanel.add(datiPersonaliButton);
-        westPanel.add(visualizzaObiettivoButton);
-        westPanel.add(modificaPasswordButton);
+        button1.setFont(Constants.appFont);
+        button2.setFont(Constants.appFont);
+        button3.setFont(Constants.appFont);
+
+
+
+        westPanel.add(button1);
+        westPanel.add(button2);
+        westPanel.add(button3);
+
         mainPanel.add(westPanel, BorderLayout.WEST);
 
         // Pannello inferiore (South) per le opzioni di visualizzazione
         JPanel southPanel = new JPanel(new GridLayout(1, 3, 10, 10));
         southPanel.setBackground(Constants.BG_COLOR);
-        JButton aggiornamentiDietaButton = createStyledButton("Aggiornamenti e dieta");
-        JButton visualizzaMiglioriNutrizionistiButton = createStyledButton("Visualizza migliori nutrizionisti");
-        JButton visualizzaProfiloButton = createStyledButton("Visualizza profilo");
-        southPanel.add(aggiornamentiDietaButton);
-        southPanel.add(visualizzaMiglioriNutrizionistiButton);
-        southPanel.add(visualizzaProfiloButton);
+
+        southPanel.add(button4);
+        southPanel.add(button5);
+        southPanel.add(button6);
+
         southPanel.setPreferredSize(new Dimension(1200, 120)); // Altezza di 80 pixel
         mainPanel.add(southPanel, BorderLayout.SOUTH);
 
@@ -83,4 +93,14 @@ public abstract class HomePage extends JPanel {
     public void addTable(JTable table) {
         centerPanel.add(table, BorderLayout.CENTER);
     }
+
+    public void setButtonAction(int index, ActionListener action) {
+        buttons.get(index).addActionListener(action);
+    }
+
+    public void setButtonTitle(int index, String title) {
+        buttons.get(index).setText(title);
+    }
+
+
 }
