@@ -1,30 +1,30 @@
 package unibo.mydiet.model.users;
 
-public record Client(String phoneNumber,
-                     String email,
-                     String age,
-                     String Username,
-                     String name,
-                     String surname,
+public record Client(String numeroTelefono,
+                     String mail,
+                     String eta,
+                     String username,
+                     String nome,
+                     String  cognome,
                      String password,
-                     String sex) implements User {
+                     String sesso) implements User {
     public Client {
-        if (phoneNumber == null || phoneNumber.isBlank()) {
+        if (numeroTelefono == null || numeroTelefono.isBlank()) {
             throw new IllegalArgumentException("Phone number cannot be null or empty");
         }
-        if (email == null || email.isBlank()) {
+        if (mail == null || mail.isBlank()) {
             throw new IllegalArgumentException("Email cannot be null or empty");
         }
-        if (age == null || age.isBlank()) {
+        if (eta == null || eta.isBlank()) {
             throw new IllegalArgumentException("Age cannot be null or empty");
         }
-        if (Username == null || Username.isBlank()) {
+        if (username == null || username.isBlank()) {
             throw new IllegalArgumentException("Username cannot be null or empty");
         }
-        if (name == null || name.isBlank()) {
+        if (nome == null || nome.isBlank()) {
             throw new IllegalArgumentException("Name cannot be null or empty");
         }
-        if (surname == null || surname.isBlank()) {
+        if (cognome == null || cognome.isBlank()) {
             throw new IllegalArgumentException("Surname cannot be null or empty");
         }
         if (password == null || password.isBlank()) {
