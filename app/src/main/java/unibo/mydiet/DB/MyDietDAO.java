@@ -16,6 +16,7 @@ public class MyDietDAO implements AutoCloseable {
             String USER = "root";
             String PASS = "123456";
             this.connection = DriverManager.getConnection(DB_URL, USER, PASS);
+            System.out.println("Connected to the database");
         } catch (SQLException e) {
             throw new RuntimeException("Error connecting to the database", e);
         }
@@ -98,6 +99,20 @@ public class MyDietDAO implements AutoCloseable {
         }
     }
 
+    // 2. Accesso di un utente
+    public boolean loginNut(final String username, final String password) throws SQLException {
+        String query = "SELECT Password FROM NUTRIZIONISTA WHERE Username = ? ";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, username);
+            try (ResultSet rs = stmt.executeQuery()) {
+                rs.next();
+                return rs.getString("Password").equals(password);
+            }catch (SQLException e){
+                return false;
+            }
+        }
+    }
+
     // Client Info
     public Client getClientInfo(final String username) throws SQLException {
         final String query = "SELECT * FROM CLIENTE WHERE Username = ?";
@@ -114,6 +129,34 @@ public class MyDietDAO implements AutoCloseable {
                             rs.getString("Cognome"),
                             rs.getString("Password"),
                             rs.getString("Sesso")
+                    );
+                }
+            }
+        }
+        catch (SQLException e){
+            return null;
+        }
+        return null;
+    }
+
+    // Client Info
+    public Nutrizionist getNutInfo(final String username) throws SQLException {
+        final String query = "SELECT * FROM NUTRIZIONISTA WHERE Username = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, username);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return new Nutrizionist(
+                            rs.getString("Specializzazione"),
+                            rs.getString("Nome_"),
+                            rs.getString("Cognome"),
+                            rs.getString("Username"),
+                            rs.getString("Password"),
+                            rs.getString("Numero_di_telefono"),
+                            rs.getString("Mail"),
+                            rs.getString("Sesso"),
+                            rs.getString("Percentuale_soddisfatti"),
+                            rs.getString("Media_stelle")
                     );
                 }
             }

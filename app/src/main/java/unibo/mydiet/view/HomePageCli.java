@@ -1,88 +1,45 @@
 package unibo.mydiet.view;
 
 import unibo.mydiet.controller.Controller;
+import unibo.mydiet.model.users.Client;
+import unibo.mydiet.model.users.Nutrizionist;
+import unibo.mydiet.model.users.UserType;
 
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 
-public class HomePageCli extends JPanel {
+public class HomePageCli extends HomePage{
+    private final Controller controller;
 
-    public HomePageCli(final Controller controller) {
-        // Imposta il layout del pannello HomePageCli
-        this.setLayout(new BorderLayout());
-
-        // Pannello principale con BorderLayout
-        JPanel mainPanel = new JPanel(new BorderLayout());
-
-        // Pannello superiore (North) per il titolo
-        JPanel northPanel = new JPanel(new BorderLayout());
-        JLabel northLabel = new JLabel("MyDiet", SwingConstants.CENTER);
-        northPanel.setBackground(Constants.BG_COLOR);
-        northLabel.setOpaque(false);
-        northLabel.setForeground(Color.white);
-        northLabel.setFont(Constants.appFont.deriveFont(Font.PLAIN, 50));
-        northPanel.add(northLabel, BorderLayout.CENTER);
-        mainPanel.add(northPanel, BorderLayout.NORTH);
-
-
-        // Pannello centrale (Center) per i dati personali utente
-        JPanel centerPanel = new JPanel(new BorderLayout());
-        centerPanel.setBackground(Constants.BG_COLOR);
-
-        JLabel centerLabel = new JLabel("Dati personali utente", SwingConstants.CENTER);
-
-        JTable table = new JTable(2, 8);
-        final String[][] data = {
-                {},
-                {"2", "Luigi", "Verdi"},
-                {"3", "Anna", "Bianchi"},
-        };
-        centerLabel.setForeground(Color.WHITE);
-        centerLabel.setFont(Constants.appFont);
-        centerPanel.add(centerLabel, BorderLayout.CENTER);
-        mainPanel.add(centerPanel, BorderLayout.CENTER);
-
-        // Pannello sinistro (West) per i pulsanti di navigazione
-        JPanel westPanel = new JPanel(new GridLayout(3, 1, 10, 10));
-        westPanel.setBackground(Constants.BG_COLOR);
-        JButton datiPersonaliButton = createStyledButton("Dati personali");
-        datiPersonaliButton.setFont(Constants.appFont);
-        JButton visualizzaObiettivoButton = createStyledButton("Visualizza obiettivo");
-        visualizzaObiettivoButton.setFont(Constants.appFont);
-        JButton modificaPasswordButton = createStyledButton("Modifica password");
-        modificaPasswordButton.setFont(Constants.appFont);
-
-        westPanel.add(datiPersonaliButton);
-        westPanel.add(visualizzaObiettivoButton);
-        westPanel.add(modificaPasswordButton);
-        mainPanel.add(westPanel, BorderLayout.WEST);
-
-        // Pannello inferiore (South) per le opzioni di visualizzazione
-        JPanel southPanel = new JPanel(new GridLayout(1, 3, 10, 10));
-        southPanel.setBackground(Constants.BG_COLOR);
-        JButton aggiornamentiDietaButton = createStyledButton("Aggiornamenti e dieta");
-        JButton visualizzaMiglioriNutrizionistiButton = createStyledButton("Visualizza migliori nutrizionisti");
-        JButton visualizzaProfiloButton = createStyledButton("Visualizza profilo");
-        southPanel.add(aggiornamentiDietaButton);
-        southPanel.add(visualizzaMiglioriNutrizionistiButton);
-        southPanel.add(visualizzaProfiloButton);
-        southPanel.setPreferredSize(new Dimension(1200, 120)); // Altezza di 80 pixel
-        mainPanel.add(southPanel, BorderLayout.SOUTH);
-
-        // Aggiungi il pannello principale al pannello HomePageCli
-        this.add(mainPanel, BorderLayout.CENTER);
+    public HomePageCli(Controller controller) {
+        super(controller);
+        this.controller = controller;
     }
-
-    // Metodo per stilizzare un JButton
-    private JButton createStyledButton(String text) {
-        JButton button = new JButton(text);
-        button.setForeground(Constants.BTN_COLOR);
-        button.setFocusPainted(false);
-        button.setFont(Constants.appFont);
-        button.setOpaque(false);
-        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        return button;
+    public void addTable() {
+        System.out.println(controller.getUserLogged().get().getCli());
+        //se logagto e cliente
+        if (controller.getUserLogged().isPresent() && controller.getUserLogged().get().getType() == UserType.CLIENT) {
+            final Client client = controller.getUserLogged().get().getCli();
+            System.out.println(client);
+            final String[][] data = {
+                    {" ", " nome", client.name(), " "},
+                    {" ", "cognome", client.surname(), " "},
+                    {" ", "username", client.Username(), " "},
+                    {" ", "numeroTelefono", String.valueOf(client.phoneNumber()), " "},
+                    {" ", "eta", String.valueOf(client.age()), " "},
+                    {" ", "mail", client.email(), " "},
+                    {" ", "sesso", client.sex(), " "},
+                    {" ", "password", client.password(), " "}
+            };
+            JTable table = new JTable(data, new String[]{"","","",""});
+            table.setFont(Constants.appFont);
+            table.setRowHeight(60);
+            table.setForeground(Constants.BTNTXT_COLOR);
+            table.setGridColor(Constants.BG_COLOR);
+            table.setBackground(Constants.BG_COLOR);
+            table.setVisible(true);
+            table.setOpaque(false);
+            super.addTable(table);
+        }
     }
 }

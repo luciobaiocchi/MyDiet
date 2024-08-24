@@ -5,12 +5,11 @@ public record Nutrizionist(String specializzazione,
                            String cognome,
                            String username,
                            String password,
-                           int numeroTelefono,
-                           int eta,
+                           String numeroTelefono,
                            String mail,
-                           char sesso,
-                           int percentualeSoddisfatti,
-                           int mediaStelle) implements User {
+                           String sesso,
+                           String percentualeSoddisfatti,
+                           String mediaStelle) implements User {
     public Nutrizionist {
         if (specializzazione == null || specializzazione.isBlank()) {
             throw new IllegalArgumentException("Specializzazione cannot be null or empty");

@@ -10,6 +10,7 @@ public class MainFrame extends JFrame implements unibo.mydiet.view.api.MainFrame
     final CardLayout mainLayout = new CardLayout();
     final JPanel contentPane = new JPanel(mainLayout);  // Usa un JPanel per ospitare i pannelli con CardLayout
     final HomePageCli homePageCli = new HomePageCli(controller);
+    final HomePageNut homePageNut = new HomePageNut(controller);
     final LoginPanel loginPanel = new LoginPanel(controller);
 
     public MainFrame() {
@@ -17,6 +18,7 @@ public class MainFrame extends JFrame implements unibo.mydiet.view.api.MainFrame
         loginPanel.addObserver(this);
         contentPane.add(loginPanel, "Login");
         contentPane.add(homePageCli, "HomePageCli");
+        contentPane.add(homePageNut, "HomePageNut");
 
         this.setSize(1400, 900);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -24,7 +26,6 @@ public class MainFrame extends JFrame implements unibo.mydiet.view.api.MainFrame
         this.setVisible(true);
 
         loadLoginPanel();
-
     }
 
     @Override
@@ -35,6 +36,8 @@ public class MainFrame extends JFrame implements unibo.mydiet.view.api.MainFrame
     @Override
     public void onPanelChange(String panelName) {
         mainLayout.show(contentPane, panelName);
+        homePageCli.addTable();
+        homePageNut.addTable();
         System.out.println("Panel changed to: " + panelName);
     }
 }

@@ -1,6 +1,6 @@
 package unibo.mydiet.view;
 import unibo.mydiet.controller.Controller;
-import unibo.mydiet.model.users.Client;
+import unibo.mydiet.model.users.UserType;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,7 +13,8 @@ public class LoginPanel extends JPanel implements PanelChangeSubject{
     // Componenti per il login
     private JTextField usernameField;
     private JPasswordField passwordField;
-    private JButton loginButton;
+    private JButton loginButtonCli;
+    private JButton loginButtonNut;
     private JButton registerButton;
 
     // Componenti per la registrazione
@@ -76,18 +77,31 @@ public class LoginPanel extends JPanel implements PanelChangeSubject{
         usernameField.setFont(Constants.appFont);
         passwordField = new JPasswordField(15);
         passwordField.setFont(Constants.appFont);
-        loginButton = createStyledButton("Login");
-        loginButton.setFont(Constants.appFont);
-        loginButton.setOpaque(true);
-        loginButton.addActionListener(e -> {
+        loginButtonCli = createStyledButton("Login Cliente");
+        loginButtonCli.setFont(Constants.appFont);
+        loginButtonCli.setOpaque(true);
+
+        loginButtonCli.addActionListener(e -> {
             String username = usernameField.getText();
             String password = String.copyValueOf(passwordField.getPassword());
-
             if (authenticateCli(username, password)) {
+                controller.setUserLogged(username, UserType.CLIENT);
                 notifyObservers("HomePageCli");
-                Client client = controller.getClientInfo(username);
-                System.out.println(client);
-                System.out.println("Login riuscito");
+            } else {
+                System.out.println("Login fallito");
+            }
+        });
+
+        loginButtonNut = createStyledButton("Login Nutrizionista");
+        loginButtonNut.setFont(Constants.appFont);
+        loginButtonNut.setOpaque(true);
+
+        loginButtonNut.addActionListener(e -> {
+            String username = usernameField.getText();
+            String password = String.copyValueOf(passwordField.getPassword());
+            if (authenticateCli(username, password)) {
+                controller.setUserLogged(username, UserType.NUTRIZIONIST);
+                notifyObservers("HomePageNut");
             } else {
                 System.out.println("Login fallito");
             }
@@ -95,10 +109,12 @@ public class LoginPanel extends JPanel implements PanelChangeSubject{
 
         registerButton = createStyledButton("Register");
         registerButton.setOpaque(true);
+
         registerButton.addActionListener(e -> {
             CardLayout cl = (CardLayout) getLayout();
             cl.show(this, "Register");
         });
+
         styleTextField(usernameField);
         styleTextField(passwordField);
 
@@ -128,11 +144,16 @@ public class LoginPanel extends JPanel implements PanelChangeSubject{
 
         gbc.gridx = 0;
         gbc.gridy = 3;
-        gbc.gridwidth = 2;
-        panel.add(loginButton, gbc);
+        gbc.gridwidth = 1;
+        panel.add(loginButtonCli, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 3;
+        gbc.gridwidth = 1;
+        panel.add(loginButtonNut, gbc);
 
         gbc.gridx = 0;
-        gbc.gridy = 4;
+        gbc.gridy = 5;
         gbc.gridwidth = 2;
         panel.add(registerButton, gbc);
 
@@ -196,7 +217,7 @@ public class LoginPanel extends JPanel implements PanelChangeSubject{
 
     // Metodo di autenticazione
     private boolean authenticateNut(final String username, final String password) {
-        return false;
+        return controller.loginNut(username, password);
     }
     // Metodo di registrazione
     private boolean registerNut(final String username, final String password) {

@@ -1,15 +1,48 @@
 package unibo.mydiet.controller;
 
 import unibo.mydiet.DB.MyDietDAO;
-import unibo.mydiet.model.users.Client;
-import unibo.mydiet.model.users.Nutrizionist;
+import unibo.mydiet.model.users.*;
 
 import java.sql.SQLException;
+import java.util.Optional;
 
 public class Controller {
-    final MyDietDAO dao = new MyDietDAO();
+    private final MyDietDAO dao = new MyDietDAO();
+    private UserLogged userLogged;
+    boolean isLogged = false;
 
     public Controller() {
+    }
+
+    public Optional<UserLogged> getUserLogged() {
+        return isLogged ? Optional.of(userLogged) : Optional.empty();
+    }
+
+    public void setUserLogged(final String username, UserType type) {
+        if (type == UserType.NUTRIZIONIST) {
+            final Nutrizionist nutrizionist = this.getNutrizionist(username);
+            this.userLogged = new UserLogged(nutrizionist);
+        } else if (type == UserType.CLIENT) {
+            final User client = this.getClient(username);
+            this.userLogged = new UserLogged(client);
+        }
+        isLogged = true;
+    }
+
+    public Client getClient(final String username) {
+        try {
+            return dao.getClientInfo(username);
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+    public Nutrizionist getNutrizionist(final String username) {
+        try {
+            return dao.getNutInfo(username);
+        } catch (SQLException e) {
+            return null;
+        }
     }
 
     public void registerClient(final String nome,
@@ -43,11 +76,12 @@ public class Controller {
         }
     }
 
-    public Client getClientInfo(final String username) {
+    public boolean loginNut(final String username, final String password) {
         try {
-            return dao.getClientInfo(username);
+            return dao.loginNut(username, password);
         } catch (SQLException e) {
-            return null;
+            return false;
         }
     }
+
 }
