@@ -88,6 +88,7 @@ public class LoginPanel extends JPanel implements PanelChangeSubject{
 
             if (authenticateCli(username, password)) {
                 notifyObservers("HomePageCli");
+                controller.getClientInfo(username);
                 System.out.println("Login riuscito");
             } else {
                 System.out.println("Login fallito");

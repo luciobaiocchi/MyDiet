@@ -1,5 +1,8 @@
 package unibo.mydiet.DB;
 
+import unibo.mydiet.model.Client;
+import unibo.mydiet.model.Nutrizionist;
+
 import java.sql.*;
 
 public class MyDietDAO implements AutoCloseable {
@@ -56,32 +59,22 @@ public class MyDietDAO implements AutoCloseable {
     }
 
     // 1. Registrazione di un nuovo utente
-    public boolean registerNutrizionist(final String specializzazione,
-                                        final String nome,
-                                        final String cognome,
-                                        final String username,
-                                        final String password,
-                                        final int numeroTelefono,
-                                        final int eta,
-                                        final String mail,
-                                        final char sesso,
-                                        final int percentualeSoddisfatti,
-                                        final int mediaStelle) {
+    public boolean registerNutrizionist(final Nutrizionist nutrizionist) throws SQLException {
         String query =
                 "INSERT INTO NUTRIZIONISTA (Specializzazione, Numero_di_telefono, Mail, Username, Nome_, " +
                 "Cognome, Password, Sesso, Percentuale_soddisfatti, Media_stelle) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, specializzazione);
-            stmt.setString(2, String.valueOf(numeroTelefono));
-            stmt.setString(3, mail);
-            stmt.setString(4, username);
-            stmt.setString(5, nome);
-            stmt.setString(6, cognome);
-            stmt.setString(7, password);
-            stmt.setString(8, String.valueOf(sesso));
-            stmt.setString(9, String.valueOf(percentualeSoddisfatti));
-            stmt.setString(10, String.valueOf(mediaStelle));
+            stmt.setString(1, nutrizionist.specializzazione());
+            stmt.setString(2, String.valueOf(nutrizionist.numeroTelefono()));
+            stmt.setString(3, nutrizionist.mail());
+            stmt.setString(4, nutrizionist.username());
+            stmt.setString(5, nutrizionist.nome());
+            stmt.setString(6, nutrizionist.cognome());
+            stmt.setString(7, nutrizionist.password());
+            stmt.setString(8, String.valueOf(nutrizionist.sesso()));
+            stmt.setString(9, String.valueOf(nutrizionist.percentualeSoddisfatti()));
+            stmt.setString(10, String.valueOf(nutrizionist.mediaStelle()));
 
             stmt.executeUpdate();  // Esegui l'operazione di inserimento
         }catch (SQLException e){
@@ -105,30 +98,23 @@ public class MyDietDAO implements AutoCloseable {
         }
     }
 
-//    // Account type
-//    public AccountType getAccountType(final String username) throws SQLException {
-//        final String query = "SELECT account.Username AS ACC_NAME,"
-//                + " utente.Username AS IS_USR,"
-//                + " amministratore.username AS IS_AMM "
-//                + "FROM account LEFT JOIN utente ON utente.Username = account.Username "
-//                + "LEFT JOIN amministratore ON amministratore.username = account.username\n"
-//                + "WHERE account.username = ?";
-//        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-//            stmt.setString(1, username);
-//            try (ResultSet rs = stmt.executeQuery()) {
-//                if (rs.next()) {
-//                    if (!Objects.isNull(rs.getString("IS_USR"))) {
-//                        return AccountType.USER;
-//                    } else if (!Objects.isNull(rs.getString("IS_AMM"))) {
-//                        return AccountType.ADMIN;
-//                    } else {
-//                        throw new IllegalStateException("No account type found.");
-//                    }
-//                }
-//            }
-//        }
-//        return null;
-//    }
+    // Client Info
+    public Client getClientInfo(final String username) throws SQLException {
+        final String query = "SELECT * FROM CLIENTE WHERE Username = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, username);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    System.out.println("numero telefono: " + rs.getString("Numero_di_telefono"));
+                }
+            }
+        }
+        catch (SQLException e){
+            return null;
+        }
+        return null;
+    }
 
 //    // Account
 //    public User getAccount(final String username) throws SQLException {
