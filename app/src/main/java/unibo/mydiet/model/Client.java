@@ -7,7 +7,7 @@ public record Client(String phoneNumber,
                      String name,
                      String surname,
                      String password,
-                     String sex) {
+                     String sex) implements User {
     public Client {
         if (phoneNumber == null || phoneNumber.isBlank()) {
             throw new IllegalArgumentException("Phone number cannot be null or empty");
@@ -32,4 +32,8 @@ public record Client(String phoneNumber,
         }
     }
 
+    @Override
+    public UserType getType() {
+        return UserType.CLIENT;
+    }
 }

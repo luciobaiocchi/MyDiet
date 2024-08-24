@@ -103,10 +103,18 @@ public class MyDietDAO implements AutoCloseable {
         final String query = "SELECT * FROM CLIENTE WHERE Username = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, username);
-
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    System.out.println("numero telefono: " + rs.getString("Numero_di_telefono"));
+                    return new Client(
+                            rs.getString("Numero_di_telefono"),
+                            rs.getString("Mail"),
+                            rs.getString("Eta"),
+                            rs.getString("Username"),
+                            rs.getString("Nome_"),
+                            rs.getString("Cognome"),
+                            rs.getString("Password"),
+                            rs.getString("Sesso")
+                    );
                 }
             }
         }

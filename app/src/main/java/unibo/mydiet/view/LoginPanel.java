@@ -1,5 +1,6 @@
 package unibo.mydiet.view;
 import unibo.mydiet.controller.Controller;
+import unibo.mydiet.model.Client;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,17 +23,13 @@ public class LoginPanel extends JPanel implements PanelChangeSubject{
     private JButton backButton;
 
     // Colorazione moderna
-    private final Color backgroundColor = new Color(34, 40, 49);
-    private final Color panelColor = new Color(0, 15, 40);
-    private final Color textColor = new Color(200, 200, 200);
-    private final Color buttonColor = new Color(136, 105, 136);
-    private final Color buttonTextColor = new Color(237, 193, 141, 255);
+
     private List<PanelChangeObserver> observers = new ArrayList<>();
 
     public LoginPanel(final Controller controller) {
         this.controller = controller;
         setLayout(new CardLayout());
-        setBackground(backgroundColor);
+        setBackground(Constants.BG_COLOR);
 
         // Pannello di login
         JPanel loginPanel = createLoginPanel();
@@ -54,7 +51,7 @@ public class LoginPanel extends JPanel implements PanelChangeSubject{
     // Metodo per creare il pannello di login
     private JPanel createLoginPanel() {
         JPanel panel = new JPanel(new GridBagLayout());
-        panel.setBackground(panelColor);
+        panel.setBackground(Constants.BG_COLOR);
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -88,7 +85,8 @@ public class LoginPanel extends JPanel implements PanelChangeSubject{
 
             if (authenticateCli(username, password)) {
                 notifyObservers("HomePageCli");
-                controller.getClientInfo(username);
+                Client client = controller.getClientInfo(username);
+                System.out.println(client);
                 System.out.println("Login riuscito");
             } else {
                 System.out.println("Login fallito");
@@ -97,7 +95,6 @@ public class LoginPanel extends JPanel implements PanelChangeSubject{
 
         registerButton = createStyledButton("Register");
         registerButton.setOpaque(true);
-        registerButton.setFont(Constants.appFont);
         registerButton.addActionListener(e -> {
             CardLayout cl = (CardLayout) getLayout();
             cl.show(this, "Register");
@@ -145,7 +142,7 @@ public class LoginPanel extends JPanel implements PanelChangeSubject{
     // Metodo per creare il pannello di registrazione
     private JPanel createRegisterPanel() {
         JPanel panel = new JPanel(new GridBagLayout());
-        panel.setBackground(panelColor);
+        panel.setBackground(Constants.BG_COLOR);
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -209,28 +206,29 @@ public class LoginPanel extends JPanel implements PanelChangeSubject{
     // Metodo per stilizzare un JLabel
     private JLabel createStyledLabel(String text) {
         JLabel label = new JLabel(text);
-        label.setForeground(textColor);
+        label.setForeground(Constants.TXT_COLOR);
         return label;
     }
 
     // Metodo per stilizzare un JTextField
     private void styleTextField(JTextField textField) {
         textField.setBackground(new Color(34, 40, 49));
-        textField.setForeground(textColor);
-        textField.setCaretColor(textColor);
-        textField.setBorder(BorderFactory.createLineBorder(buttonColor, 2));
+        textField.setForeground(Constants.TXT_COLOR);
+        textField.setCaretColor(Constants.TXT_COLOR);
+        textField.setBorder(BorderFactory.createLineBorder(Constants.BTN_COLOR, 2));
     }
 
     // Metodo per stilizzare un JButton
     private JButton createStyledButton(String text) {
         JButton button = new JButton(text);
-        button.setBackground(buttonColor);
-        button.setForeground(buttonTextColor);
+        button.setBackground(Constants.BTN_COLOR);
+        button.setForeground(Constants.BTNTXT_COLOR);
         button.setFocusPainted(false);
+        button.setOpaque(true);
         button.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
-        button.setFont(new Font("Arial", Font.BOLD, 14));
+        button.setFont(Constants.appFont);
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        button.setBorder(BorderFactory.createLineBorder(buttonColor.darker(), 1));
+        button.setBorder(BorderFactory.createLineBorder(Constants.BTN_COLOR.darker(), 1));
         return button;
     }
 

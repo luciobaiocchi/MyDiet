@@ -10,7 +10,7 @@ public record Nutrizionist(String specializzazione,
                            String mail,
                            char sesso,
                            int percentualeSoddisfatti,
-                           int mediaStelle) {
+                           int mediaStelle) implements User {
     public Nutrizionist {
         if (specializzazione == null || specializzazione.isBlank()) {
             throw new IllegalArgumentException("Specializzazione cannot be null or empty");
@@ -30,5 +30,10 @@ public record Nutrizionist(String specializzazione,
         if (mail == null || mail.isBlank()) {
             throw new IllegalArgumentException("Mail cannot be null or empty");
         }
+    }
+
+    @Override
+    public UserType getType() {
+        return UserType.NUTRIZIONIST;
     }
 }

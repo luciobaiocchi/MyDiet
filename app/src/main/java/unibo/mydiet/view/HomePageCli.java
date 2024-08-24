@@ -3,6 +3,8 @@ package unibo.mydiet.view;
 import unibo.mydiet.controller.Controller;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 
 public class HomePageCli extends JPanel {
@@ -15,24 +17,43 @@ public class HomePageCli extends JPanel {
         JPanel mainPanel = new JPanel(new BorderLayout());
 
         // Pannello superiore (North) per il titolo
-        JLabel titleLabel = new JLabel("MyDiet", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 36));
-        mainPanel.add(titleLabel, BorderLayout.NORTH);
+        JPanel northPanel = new JPanel(new BorderLayout());
+        JLabel northLabel = new JLabel("MyDiet", SwingConstants.CENTER);
+        northPanel.setBackground(Constants.BG_COLOR);
+        northLabel.setOpaque(false);
+        northLabel.setForeground(Color.white);
+        northLabel.setFont(Constants.appFont.deriveFont(Font.PLAIN, 50));
+        northPanel.add(northLabel, BorderLayout.CENTER);
+        mainPanel.add(northPanel, BorderLayout.NORTH);
+
 
         // Pannello centrale (Center) per i dati personali utente
         JPanel centerPanel = new JPanel(new BorderLayout());
-        centerPanel.setBackground(new Color(242, 204, 91));
+        centerPanel.setBackground(Constants.BG_COLOR);
+
         JLabel centerLabel = new JLabel("Dati personali utente", SwingConstants.CENTER);
-        centerLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+
+        JTable table = new JTable(2, 8);
+        final String[][] data = {
+                {},
+                {"2", "Luigi", "Verdi"},
+                {"3", "Anna", "Bianchi"},
+        };
+        centerLabel.setForeground(Color.WHITE);
+        centerLabel.setFont(Constants.appFont);
         centerPanel.add(centerLabel, BorderLayout.CENTER);
         mainPanel.add(centerPanel, BorderLayout.CENTER);
 
         // Pannello sinistro (West) per i pulsanti di navigazione
         JPanel westPanel = new JPanel(new GridLayout(3, 1, 10, 10));
-        westPanel.setBackground(new Color(255, 255, 255));
-        JButton datiPersonaliButton = createButton("Dati personali");
-        JButton visualizzaObiettivoButton = createButton("Visualizza obiettivo");
-        JButton modificaPasswordButton = createButton("Modifica password");
+        westPanel.setBackground(Constants.BG_COLOR);
+        JButton datiPersonaliButton = createStyledButton("Dati personali");
+        datiPersonaliButton.setFont(Constants.appFont);
+        JButton visualizzaObiettivoButton = createStyledButton("Visualizza obiettivo");
+        visualizzaObiettivoButton.setFont(Constants.appFont);
+        JButton modificaPasswordButton = createStyledButton("Modifica password");
+        modificaPasswordButton.setFont(Constants.appFont);
+
         westPanel.add(datiPersonaliButton);
         westPanel.add(visualizzaObiettivoButton);
         westPanel.add(modificaPasswordButton);
@@ -40,24 +61,28 @@ public class HomePageCli extends JPanel {
 
         // Pannello inferiore (South) per le opzioni di visualizzazione
         JPanel southPanel = new JPanel(new GridLayout(1, 3, 10, 10));
-        JButton aggiornamentiDietaButton = createButton("Aggiornamenti e dieta");
-        JButton visualizzaMiglioriNutrizionistiButton = createButton("Visualizza migliori nutrizionisti");
-        JButton visualizzaProfiloButton = createButton("Visualizza profilo");
+        southPanel.setBackground(Constants.BG_COLOR);
+        JButton aggiornamentiDietaButton = createStyledButton("Aggiornamenti e dieta");
+        JButton visualizzaMiglioriNutrizionistiButton = createStyledButton("Visualizza migliori nutrizionisti");
+        JButton visualizzaProfiloButton = createStyledButton("Visualizza profilo");
         southPanel.add(aggiornamentiDietaButton);
         southPanel.add(visualizzaMiglioriNutrizionistiButton);
         southPanel.add(visualizzaProfiloButton);
+        southPanel.setPreferredSize(new Dimension(1200, 120)); // Altezza di 80 pixel
         mainPanel.add(southPanel, BorderLayout.SOUTH);
 
         // Aggiungi il pannello principale al pannello HomePageCli
         this.add(mainPanel, BorderLayout.CENTER);
     }
 
-    // Metodo per creare bottoni con stile coerente
-    private JButton createButton(String text) {
+    // Metodo per stilizzare un JButton
+    private JButton createStyledButton(String text) {
         JButton button = new JButton(text);
-        button.setBackground(new Color(242, 204, 91));
-        button.setFont(new Font("Arial", Font.PLAIN, 16));
+        button.setForeground(Constants.BTN_COLOR);
         button.setFocusPainted(false);
+        button.setFont(Constants.appFont);
+        button.setOpaque(false);
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
         return button;
     }
 }

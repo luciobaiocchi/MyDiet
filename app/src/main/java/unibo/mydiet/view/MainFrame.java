@@ -18,12 +18,13 @@ public class MainFrame extends JFrame implements unibo.mydiet.view.api.MainFrame
         contentPane.add(loginPanel, "Login");
         contentPane.add(homePageCli, "HomePageCli");
 
-        this.setSize(1200, 900);
+        this.setSize(1400, 900);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setLocation(350, 100);
+        this.setLocation(300, 100);
         this.setVisible(true);
 
         loadLoginPanel();
+
     }
 
     @Override
@@ -33,7 +34,7 @@ public class MainFrame extends JFrame implements unibo.mydiet.view.api.MainFrame
 
     @Override
     public void onPanelChange(String panelName) {
-        mainLayout.show(contentPane, "HomePageCli");
+        mainLayout.show(contentPane, panelName);
         System.out.println("Panel changed to: " + panelName);
     }
 }
