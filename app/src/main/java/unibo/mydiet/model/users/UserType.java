@@ -1,4 +1,4 @@
-package unibo.mydiet.model;
+package unibo.mydiet.model.users;
 
 public enum UserType {
     CLIENT,

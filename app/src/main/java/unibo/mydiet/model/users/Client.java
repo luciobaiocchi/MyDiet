@@ -1,4 +1,4 @@
-package unibo.mydiet.model;
+package unibo.mydiet.model.users;
 
 public record Client(String phoneNumber,
                      String email,

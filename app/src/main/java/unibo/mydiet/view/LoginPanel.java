@@ -1,6 +1,6 @@
 package unibo.mydiet.view;
 import unibo.mydiet.controller.Controller;
-import unibo.mydiet.model.Client;
+import unibo.mydiet.model.users.Client;
 
 import javax.swing.*;
 import java.awt.*;

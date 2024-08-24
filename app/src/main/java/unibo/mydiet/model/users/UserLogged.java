@@ -1,4 +1,4 @@
-package unibo.mydiet.model;
+package unibo.mydiet.model.users;
 
 public class UserLogged {
     private final User user;

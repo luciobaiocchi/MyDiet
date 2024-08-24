@@ -1,8 +1,8 @@
 package unibo.mydiet.controller;
 
 import unibo.mydiet.DB.MyDietDAO;
-import unibo.mydiet.model.Client;
-import unibo.mydiet.model.Nutrizionist;
+import unibo.mydiet.model.users.Client;
+import unibo.mydiet.model.users.Nutrizionist;
 
 import java.sql.SQLException;
 
