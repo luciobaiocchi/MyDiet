@@ -35,8 +35,12 @@ public class MainFrame extends JFrame implements unibo.mydiet.view.api.MainFrame
 
     @Override
     public void onPanelChange(String panelName) {
+        if (panelName.equals("HomePageCli")) {
+            homePageCli.addTable();
+        } else if (panelName.equals("HomePageNut")) {
+            homePageNut.addTable();
+        }
         mainLayout.show(contentPane, panelName);
-        homePageCli.addTable();
         homePageNut.addTable();
         System.out.println("Panel changed to: " + panelName);
     }
