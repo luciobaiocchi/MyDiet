@@ -19,7 +19,8 @@ public class HomePageCli extends HomePage{
         super.setButtonAction(4, new ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent e) {
-                System.out.println(controller.getNutrizionists());
+                addNutList();
+                System.out.println("Visualizza Nutrizionisti");
             }
         });
     }
@@ -30,5 +31,9 @@ public class HomePageCli extends HomePage{
             JTable table = TableFactory.getCliProfile(client);
             super.addTable(table);
         }
+    }
+    public void addNutList() {
+        System.out.println("addNutList");
+        super.addTable(TableFactory.getNutList(controller.getNutrizionists()));
     }
 }

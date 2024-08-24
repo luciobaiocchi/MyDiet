@@ -6,6 +6,8 @@ import unibo.mydiet.model.users.Client;
 import unibo.mydiet.model.users.Nutrizionist;
 
 import javax.swing.*;
+import java.util.Arrays;
+import java.util.List;
 
 
 public class TableFactory {
@@ -55,4 +57,24 @@ public class TableFactory {
         table.setOpaque(false);
         return table;
     }
+
+    public static JTable getNutList (final List<Nutrizionist> nutrizionists) {
+        final String[][] data = new String[nutrizionists.size()][4];
+        for (int i = 0; i < nutrizionists.size(); i++) {
+            data[i][0] = " ";
+            data[i][1] = nutrizionists.get(i).nome();
+            data[i][2] = nutrizionists.get(i).cognome();
+            data[i][3] = nutrizionists.get(i).specializzazione();
+        }
+        JTable table = new JTable(data, new String[]{"","","",""});
+        table.setFont(Constants.appFont);
+        table.setRowHeight(40);
+        table.setForeground(Constants.BTNTXT_COLOR);
+        table.setGridColor(Constants.BG_COLOR);
+        table.setBackground(Constants.BG_COLOR);
+        table.setVisible(true);
+        table.setOpaque(false);
+        return table;
+    }
+
 }
