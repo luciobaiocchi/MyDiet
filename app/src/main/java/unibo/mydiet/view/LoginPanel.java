@@ -3,10 +3,12 @@ import unibo.mydiet.controller.Controller;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public class LoginPanel extends JPanel {
+public class LoginPanel extends JPanel implements PanelChangeSubject{
 
-    private Controller controller;
+    private final Controller controller;
     // Componenti per il login
     private JTextField usernameField;
     private JPasswordField passwordField;
@@ -20,11 +22,12 @@ public class LoginPanel extends JPanel {
     private JButton backButton;
 
     // Colorazione moderna
-    private Color backgroundColor = new Color(34, 40, 49);
-    private Color panelColor = new Color(0, 15, 40);
-    private Color textColor = new Color(200, 200, 200);
-    private Color buttonColor = new Color(136, 105, 136);
-    private Color buttonTextColor = new Color(237, 193, 141, 255);
+    private final Color backgroundColor = new Color(34, 40, 49);
+    private final Color panelColor = new Color(0, 15, 40);
+    private final Color textColor = new Color(200, 200, 200);
+    private final Color buttonColor = new Color(136, 105, 136);
+    private final Color buttonTextColor = new Color(237, 193, 141, 255);
+    private List<PanelChangeObserver> observers = new ArrayList<>();
 
     public LoginPanel(final Controller controller) {
         this.controller = controller;
@@ -84,10 +87,9 @@ public class LoginPanel extends JPanel {
             String password = String.copyValueOf(passwordField.getPassword());
 
             if (authenticateCli(username, password)) {
-                // Autenticazione riuscita
+                notifyObservers("HomePageCli");
                 System.out.println("Login riuscito");
             } else {
-                // Autenticazione fallita
                 System.out.println("Login fallito");
             }
         });
@@ -229,5 +231,22 @@ public class LoginPanel extends JPanel {
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
         button.setBorder(BorderFactory.createLineBorder(buttonColor.darker(), 1));
         return button;
+    }
+
+    @Override
+    public void addObserver(PanelChangeObserver observer) {
+        observers.add(observer);
+    }
+
+    @Override
+    public void removeObserver(PanelChangeObserver observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public void notifyObservers(String panelName) {
+        for (PanelChangeObserver observer : observers) {
+            observer.onPanelChange(panelName);
+        }
     }
 }

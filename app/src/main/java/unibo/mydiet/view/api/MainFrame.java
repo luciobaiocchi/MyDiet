@@ -1,5 +1,7 @@
 package unibo.mydiet.view.api;
 
-public interface MainFrame {
+import unibo.mydiet.view.PanelChangeObserver;
+
+public interface MainFrame extends PanelChangeObserver {
     void loadLoginPanel();
 }
