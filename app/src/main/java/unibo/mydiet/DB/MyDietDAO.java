@@ -1,5 +1,6 @@
 package unibo.mydiet.DB;
 
+import unibo.mydiet.model.Goal;
 import unibo.mydiet.model.users.Client;
 import unibo.mydiet.model.users.Nutrizionist;
 
@@ -149,6 +150,29 @@ public class MyDietDAO implements AutoCloseable {
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     return buildNutrizionist(rs);
+                }
+            }
+        }
+        catch (SQLException e){
+            return null;
+        }
+        return null;
+    }
+
+    // Client Goal
+    public Goal getCliGoal(final String username) throws SQLException {
+        final String query = "SELECT * FROM OBBIETTIVO WHERE Username = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, username);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return new Goal(rs.getString("Data_raggiungimento"),
+                            rs.getString("Raggiunto"),
+                            rs.getString("Descrizione"),
+                            rs.getString("Peso"),
+                            rs.getString("Circ_punto_vita"),
+                            rs.getString("Circ_braccio"),
+                            rs.getString("Circ_gambe"));
                 }
             }
         }

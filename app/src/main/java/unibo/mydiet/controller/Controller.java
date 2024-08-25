@@ -1,10 +1,12 @@
 package unibo.mydiet.controller;
 
 import unibo.mydiet.DB.MyDietDAO;
+import unibo.mydiet.model.Goal;
 import unibo.mydiet.model.users.*;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 public class Controller {
@@ -104,6 +106,14 @@ public class Controller {
     public List<Nutrizionist> getMoreSatisfiedlist() {
         try {
             return dao.getMoreSatisfied();
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+    public Goal getCLientGoal(){
+        try {
+            return dao.getCliGoal(userLogged.getCli().username());
         } catch (SQLException e) {
             return null;
         }

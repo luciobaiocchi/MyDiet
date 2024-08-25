@@ -5,6 +5,7 @@ import unibo.mydiet.model.users.Client;
 import unibo.mydiet.model.users.UserType;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class HomePageCli extends HomePage{
@@ -21,10 +22,18 @@ public class HomePageCli extends HomePage{
         super.setButtonAction(3, new ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent e) {
+
                 addTable();
                 System.out.println("Dati Personali");
+                HomePageCli.super.setButtonAction(1, new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        addGoal();
+                    }
+                });
             }
         });
+
 
         super.setButtonAction(4, new ActionListener() {
             @Override
@@ -38,7 +47,6 @@ public class HomePageCli extends HomePage{
                     public void actionPerformed(java.awt.event.ActionEvent e) {
                         addNutList();
                         System.out.println("Lista completa");
-
                     }
                 });
 
@@ -93,6 +101,10 @@ public class HomePageCli extends HomePage{
     public void addNutMoreSatisfied() {
         System.out.println("addNutHigerRating");
         super.addTable(TableFactory.getNutListMostSatisied(controller.getMoreSatisfiedlist()));
+    }
+
+    public void addGoal(){
+        System.out.println(controller.getCLientGoal());
     }
 
     private void setButtonProfile() {
