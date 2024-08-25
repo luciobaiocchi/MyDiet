@@ -93,4 +93,20 @@ public class Controller {
         }
     }
 
+    public List<Nutrizionist> getHigerratingList() {
+        try {
+            return dao.getHigerRating();
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+    public List<Nutrizionist> getMoreSatisfiedlist() {
+        try {
+            return dao.getMoreSatisfied();
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
 }

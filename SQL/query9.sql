@@ -5,4 +5,9 @@ SELECT SVI_Username, COUNT(*) AS Numero_Clienti, SUM(CASE WHEN Raggiunto = 'S' T
 FROM DIETA
 JOIN OBBIETTIVO ON DIETA.Username = OBBIETTIVO.Username
 GROUP BY SVI_Username
--- HAVING Percentuale >= 50;
+HAVING Percentuale >= 50;
+
+-- utilizzando l'attibuto ridondante all'interno di nutrizionista
+SELECT *
+FROM NUTRIZIONISTA
+WHERE Percentuale_soddisfatti >= 50;

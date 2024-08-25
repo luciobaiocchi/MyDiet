@@ -2,11 +2,9 @@ package unibo.mydiet.view;
 
 import unibo.mydiet.controller.Controller;
 import unibo.mydiet.model.users.Client;
-import unibo.mydiet.model.users.Nutrizionist;
 import unibo.mydiet.model.users.UserType;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionListener;
 
 public class HomePageCli extends HomePage{
@@ -16,11 +14,57 @@ public class HomePageCli extends HomePage{
         super(controller);
         this.controller = controller;
         super.setButtonTitle(4,"Visualizza Nutrizionisti");
+        HomePageCli.super.setButtonTitle(0,"Dati Personali");
+        HomePageCli.super.setButtonTitle(1,"Visualiza Obbiettivo");
+        HomePageCli.super.setButtonTitle(2,"Visualiza Password");
+
         super.setButtonAction(4, new ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent e) {
                 addNutList();
                 System.out.println("Visualizza Nutrizionisti");
+
+                HomePageCli.super.setButtonTitle(0,"Lista completa");
+                HomePageCli.super.setButtonAction(0, new ActionListener() {
+                    @Override
+                    public void actionPerformed(java.awt.event.ActionEvent e) {
+                        addNutList();
+                        System.out.println("Lista completa");
+
+                    }
+                });
+
+                HomePageCli.super.setButtonTitle(1,"Più stellati");
+                HomePageCli.super.setButtonAction(1, new ActionListener() {
+                    @Override
+                    public void actionPerformed(java.awt.event.ActionEvent e) {
+                        addNutHigerRating();
+                        System.out.println("Più stellati");
+
+                    }
+                });
+
+                HomePageCli.super.setButtonTitle(2,"Più soddisfatti");
+                HomePageCli.super.setButtonAction(2, new ActionListener() {
+                    @Override
+                    public void actionPerformed(java.awt.event.ActionEvent e) {
+                        addNutMoreSatisfied();
+                        System.out.println("Più Soddisfatti");
+
+                    }
+                });
+            }
+        });
+
+        super.setButtonTitle(5,"Visualizza Profilo");
+        super.setButtonAction(5, new ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                addTable();
+                System.out.println("Visualizza Profilo");
+                HomePageCli.super.setButtonTitle(0,"Dati Personali");
+                HomePageCli.super.setButtonTitle(1,"Visualiza Obbiettivo");
+                HomePageCli.super.setButtonTitle(2,"Visualiza Password");
             }
         });
     }
@@ -36,4 +80,13 @@ public class HomePageCli extends HomePage{
         System.out.println("addNutList");
         super.addTable(TableFactory.getNutList(controller.getNutrizionists()));
     }
+    public void addNutHigerRating() {
+        System.out.println("addNutHigerRating");
+        super.addTable(TableFactory.getNutList(controller.getHigerratingList()));
+    }
+    public void addNutMoreSatisfied() {
+        System.out.println("addNutHigerRating");
+        super.addTable(TableFactory.getNutListMostSatisied(controller.getMoreSatisfiedlist()));
+    }
+
 }

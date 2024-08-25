@@ -35,7 +35,7 @@ public abstract class HomePage extends JPanel {
         JLabel northLabel = new JLabel("MyDiet", SwingConstants.CENTER);
         northPanel.setBackground(Constants.BG_COLOR);
         northLabel.setOpaque(false);
-        northLabel.setForeground(Color.white);
+        northLabel.setForeground(Constants.TXT_COLOR);
         northLabel.setFont(Constants.appFont.deriveFont(Font.PLAIN, 50));
         northPanel.add(northLabel, BorderLayout.CENTER);
         mainPanel.add(northPanel, BorderLayout.NORTH);
@@ -98,9 +98,6 @@ public abstract class HomePage extends JPanel {
     }
 
     public void addTable(final JTable table) {
-        table.setBackground(Constants.BG_COLOR); // Set the background for the table
-        table.setForeground(Color.ORANGE); // Example text color
-
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.getViewport().setBackground(Constants.BG_COLOR);
         scrollPane.setBackground(Constants.BG_COLOR);

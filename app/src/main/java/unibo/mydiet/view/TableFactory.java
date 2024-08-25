@@ -6,6 +6,7 @@ import unibo.mydiet.model.users.Client;
 import unibo.mydiet.model.users.Nutrizionist;
 
 import javax.swing.*;
+import javax.swing.table.JTableHeader;
 import java.util.Arrays;
 import java.util.List;
 
@@ -26,13 +27,7 @@ public class TableFactory {
                 {" ", "Clienti a obbiettivo", nutrizionist.percentualeSoddisfatti() + "%", " "},
         };
         JTable table = new JTable(data, new String[]{"","","",""});
-        table.setFont(Constants.appFont);
-        table.setRowHeight(60);
-        table.setForeground(Constants.BTNTXT_COLOR);
-        table.setGridColor(Constants.BG_COLOR);
-        table.setBackground(Constants.BG_COLOR);
-        table.setVisible(true);
-        table.setOpaque(false);
+        loadTable(table, 60);
         return table;
     }
 
@@ -48,33 +43,51 @@ public class TableFactory {
                 {" ", "eta", String.valueOf(cliente.eta()), " "},
         };
         JTable table = new JTable(data, new String[]{"","","",""});
-        table.setFont(Constants.appFont);
-        table.setRowHeight(60);
-        table.setForeground(Constants.BTNTXT_COLOR);
-        table.setGridColor(Constants.BG_COLOR);
-        table.setBackground(Constants.BG_COLOR);
-        table.setVisible(true);
-        table.setOpaque(false);
+        loadTable(table, 60);
         return table;
     }
 
     public static JTable getNutList (final List<Nutrizionist> nutrizionists) {
         final String[][] data = new String[nutrizionists.size()][4];
         for (int i = 0; i < nutrizionists.size(); i++) {
-            data[i][0] = " ";
-            data[i][1] = nutrizionists.get(i).nome();
-            data[i][2] = nutrizionists.get(i).cognome();
-            data[i][3] = nutrizionists.get(i).specializzazione();
+            data[i][0] = nutrizionists.get(i).nome();
+            data[i][1] = nutrizionists.get(i).cognome();
+            data[i][2] = nutrizionists.get(i).specializzazione();
+            data[i][3] = nutrizionists.get(i).mediaStelle();
         }
-        JTable table = new JTable(data, new String[]{"","","",""});
+        String [] columns = {"Nome", "Cognome", "Specializzazione", "Media Stelle"};
+        JTable table = new JTable(data, columns);
+        table.setDragEnabled(true);
+        loadTable(table, 40);
+        return table;
+    }
+
+    public static JTable getNutListMostSatisied (final List<Nutrizionist> nutrizionists) {
+        final String[][] data = new String[nutrizionists.size()][4];
+        for (int i = 0; i < nutrizionists.size(); i++) {
+            data[i][0] = nutrizionists.get(i).nome();
+            data[i][1] = nutrizionists.get(i).cognome();
+            data[i][2] = nutrizionists.get(i).specializzazione();
+            data[i][3] = nutrizionists.get(i).percentualeSoddisfatti();
+        }
+        String [] columns = {"Nome", "Cognome", "Specializzazione", "Percentuale Soddisfatti"};
+        JTable table = new JTable(data, columns);
+        table.setDragEnabled(true);
+        loadTable(table, 40);
+        return table;
+    }
+
+
+    private static void  loadTable(JTable table, final int rowHeight) {
+        JTableHeader header = table.getTableHeader();
+        header.setFont(Constants.appFont);
         table.setFont(Constants.appFont);
-        table.setRowHeight(40);
-        table.setForeground(Constants.BTNTXT_COLOR);
+        table.setRowHeight(rowHeight);
+        table.setForeground(Constants.TXT_COLOR);
         table.setGridColor(Constants.BG_COLOR);
         table.setBackground(Constants.BG_COLOR);
         table.setVisible(true);
-        table.setOpaque(false);
-        return table;
+        table.setOpaque(true);
     }
 
 }

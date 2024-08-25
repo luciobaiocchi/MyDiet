@@ -233,7 +233,7 @@ public class LoginPanel extends JPanel implements PanelChangeSubject{
 
     // Metodo per stilizzare un JTextField
     private void styleTextField(JTextField textField) {
-        textField.setBackground(new Color(34, 40, 49));
+        textField.setBackground(new Color(255, 255, 255));
         textField.setForeground(Constants.TXT_COLOR);
         textField.setCaretColor(Constants.TXT_COLOR);
         textField.setBorder(BorderFactory.createLineBorder(Constants.BTN_COLOR, 2));

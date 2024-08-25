@@ -148,18 +148,7 @@ public class MyDietDAO implements AutoCloseable {
             stmt.setString(1, username);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    return new Nutrizionist(
-                            rs.getString("Specializzazione"),
-                            rs.getString("Nome_"),
-                            rs.getString("Cognome"),
-                            rs.getString("Username"),
-                            rs.getString("Password"),
-                            rs.getString("Numero_di_telefono"),
-                            rs.getString("Mail"),
-                            rs.getString("Sesso"),
-                            rs.getString("Percentuale_soddisfatti"),
-                            rs.getString("Media_stelle")
-                    );
+                    return buildNutrizionist(rs);
                 }
             }
         }
@@ -176,17 +165,7 @@ public class MyDietDAO implements AutoCloseable {
         try (PreparedStatement stmt = connection.prepareStatement(query)) {;
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    nutrizionists.add(new Nutrizionist(
-                            rs.getString("Specializzazione"),
-                            rs.getString("Nome_"),
-                            rs.getString("Cognome"),
-                            rs.getString("Username"),
-                            rs.getString("Password"),
-                            rs.getString("Numero_di_telefono"),
-                            rs.getString("Mail"),
-                            rs.getString("Sesso"),
-                            rs.getString("Percentuale_soddisfatti"),
-                            rs.getString("Media_stelle")));
+                    nutrizionists.add(buildNutrizionist(rs));
                 }
             }
         }
@@ -195,6 +174,65 @@ public class MyDietDAO implements AutoCloseable {
         }
         return nutrizionists;
     }
+
+    //8. Visualizzare i 10 migliori nutrizionisti (quelli con la media di stelle più alta)
+
+
+    public List<Nutrizionist> getHigerRating() throws SQLException {
+        final String query = "SELECT * FROM NUTRIZIONISTA\n" +
+                "ORDER BY Media_Stelle DESC\n" +
+                "LIMIT 10;";
+        List<Nutrizionist> nutrizionists = new ArrayList<>();
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {;
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    nutrizionists.add(buildNutrizionist(rs));
+                }
+            }
+        }
+        catch (SQLException e){
+            return null;
+        }
+        return nutrizionists;
+    }
+
+//9. Ottenere una lista con i nutrizionisti che hanno portato all’obiettivo almeno il 50% dei clienti
+
+    public List<Nutrizionist> getMoreSatisfied() throws SQLException {
+        final String query = "SELECT *\n" +
+                "FROM NUTRIZIONISTA\n" +
+                "WHERE Percentuale_soddisfatti >= 50;";
+        List<Nutrizionist> nutrizionists = new ArrayList<>();
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {;
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    nutrizionists.add(buildNutrizionist(rs));
+                }
+            }
+        }
+        catch (SQLException e){
+            return null;
+        }
+        return nutrizionists;
+    }
+
+
+
+    private Nutrizionist buildNutrizionist(ResultSet rs) throws SQLException {
+        return new Nutrizionist(
+                rs.getString("Specializzazione"),
+                rs.getString("Nome_"),
+                rs.getString("Cognome"),
+                rs.getString("Username"),
+                rs.getString("Password"),
+                rs.getString("Numero_di_telefono"),
+                rs.getString("Mail"),
+                rs.getString("Sesso"),
+                rs.getString("Percentuale_soddisfatti"),
+                rs.getString("Media_stelle")
+        );
+    }
+
 
 //    // Account
 //    public User getAccount(final String username) throws SQLException {
@@ -226,6 +264,8 @@ public class MyDietDAO implements AutoCloseable {
 //        }
 //        return null;
 //    }
+
+
 
 //    public String[] getCompetitions() {
 //        final String query = "SELECT Nome FROM TIPO_COMPETIZIONE";
