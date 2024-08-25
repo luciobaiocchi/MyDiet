@@ -14,9 +14,17 @@ public class HomePageCli extends HomePage{
         super(controller);
         this.controller = controller;
         super.setButtonTitle(4,"Visualizza Nutrizionisti");
-        HomePageCli.super.setButtonTitle(0,"Dati Personali");
-        HomePageCli.super.setButtonTitle(1,"Visualiza Obbiettivo");
-        HomePageCli.super.setButtonTitle(2,"Visualiza Password");
+        super.setButtonTitle(5,"Visualizza Profilo");
+        super.setButtonTitle(3,"Dieta e Aggiornamenti ");
+        setButtonProfile();
+
+        super.setButtonAction(3, new ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                addTable();
+                System.out.println("Dati Personali");
+            }
+        });
 
         super.setButtonAction(4, new ActionListener() {
             @Override
@@ -62,9 +70,7 @@ public class HomePageCli extends HomePage{
             public void actionPerformed(java.awt.event.ActionEvent e) {
                 addTable();
                 System.out.println("Visualizza Profilo");
-                HomePageCli.super.setButtonTitle(0,"Dati Personali");
-                HomePageCli.super.setButtonTitle(1,"Visualiza Obbiettivo");
-                HomePageCli.super.setButtonTitle(2,"Visualiza Password");
+                setButtonProfile();
             }
         });
     }
@@ -87,6 +93,12 @@ public class HomePageCli extends HomePage{
     public void addNutMoreSatisfied() {
         System.out.println("addNutHigerRating");
         super.addTable(TableFactory.getNutListMostSatisied(controller.getMoreSatisfiedlist()));
+    }
+
+    private void setButtonProfile() {
+        super.setButtonTitle(0,"Dati Personali");
+        super.setButtonTitle(1,"Visualiza Obbiettivo");
+        super.setButtonTitle(2,"Visualiza Password");
     }
 
 }

@@ -14,6 +14,7 @@ public class MainFrame extends JFrame implements unibo.mydiet.view.api.MainFrame
     final LoginPanel loginPanel = new LoginPanel(controller);
 
     public MainFrame() {
+        this.setTitle("MyDiet");
         this.setContentPane(contentPane);
         loginPanel.addObserver(this);
         contentPane.add(loginPanel, "Login");

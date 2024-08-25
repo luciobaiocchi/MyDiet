@@ -88,7 +88,7 @@ public class LoginPanel extends JPanel implements PanelChangeSubject{
                 controller.setUserLogged(username, UserType.CLIENT);
                 notifyObservers("HomePageCli");
             } else {
-                System.out.println("Login fallito");
+                loginFailed();
             }
         });
 
@@ -103,7 +103,7 @@ public class LoginPanel extends JPanel implements PanelChangeSubject{
                 controller.setUserLogged(username, UserType.NUTRIZIONIST);
                 notifyObservers("HomePageNut");
             } else {
-                System.out.println("Login fallito");
+                loginFailed();
             }
         });
 
@@ -268,5 +268,20 @@ public class LoginPanel extends JPanel implements PanelChangeSubject{
         for (PanelChangeObserver observer : observers) {
             observer.onPanelChange(panelName);
         }
+    }
+
+    private void loginFailed(){
+        JDialog loginFailedDialog = new JDialog();
+        loginFailedDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        loginFailedDialog.setSize(300, 100);
+        loginFailedDialog.setLocationRelativeTo(null);
+        loginFailedDialog.setTitle("Login fallito");
+        loginFailedDialog.setFont(Constants.appFont);
+        JLabel label = new JLabel("Username o password errati");
+        label.setFont((Constants.appFont).deriveFont(15f));
+        loginFailedDialog.add(label);
+        loginFailedDialog.setVisible(true);
+        this.add(loginFailedDialog);
+        System.out.println("Login fallito");
     }
 }
