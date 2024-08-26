@@ -126,7 +126,8 @@ VALUES
     ('cliente10', '2024-07-22', 'N', 'Incremento della resistenza', 74, 86, 30, 50),
     ('cliente11', '2024-08-30', 'S', 'Riduzione del grasso corporeo', 73, 84, 29, 49),
     ('cliente12', '2024-09-14', 'S', 'Miglioramento della postura', 77, 85, 32, 51),
-    ('cliente13', '2024-10-20', 'N', 'Aumento della flessibilità', 79, 87, 33, 52);
+    ('cliente13', '2024-10-20', 'N', 'Aumento della flessibilità', 79, 87, 33, 52),
+    ('admin', '2024-10-20', 'N', 'Aumento della flessibilità', 79, 87, 34, 52);
 
 
 -- Tariffe per nutrizionista4

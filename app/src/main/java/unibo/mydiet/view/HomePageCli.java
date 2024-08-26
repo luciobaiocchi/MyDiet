@@ -94,6 +94,10 @@ public class HomePageCli extends HomePage{
             HomePageCli.super.setButtonTitle(0,"Lista completa");
             HomePageCli.super.setButtonTitle(1,"Più stellati");
             HomePageCli.super.setButtonTitle(2,"Più soddisfatti");
+        }else if (context == ClientContext.DIET) {
+            HomePageCli.super.setButtonTitle(0,"Visualizza Dieta");
+            HomePageCli.super.setButtonTitle(1,"Carica aggiornamento");
+            HomePageCli.super.setButtonTitle(2,"visualizza aggiornamenti");
         }
     }
 
@@ -105,6 +109,8 @@ public class HomePageCli extends HomePage{
             } else if (context == ClientContext.NUTRIZIONIST) {
                 addNutList();
                 System.out.println("Lista completa");
+            } else if (context == ClientContext.DIET) {
+                System.out.println("Visualizza Dieta");
             }
         });
         HomePageCli.super.setButtonAction(1, e -> {
@@ -114,15 +120,19 @@ public class HomePageCli extends HomePage{
             } else if (context == ClientContext.NUTRIZIONIST) {
                 addNutHigerRating();
                 System.out.println("Più stellati");
+            } else if (context == ClientContext.DIET){
+                System.out.println("carica aggiornamenti");
             }
         });
         HomePageCli.super.setButtonAction(2, e -> {
             if (context == ClientContext.HOME_PAGE) {
                 showPsw();
                 System.out.println("visualizza psw");
-            } else if (context == ClientContext.NUTRIZIONIST) {
+            }else if (context == ClientContext.NUTRIZIONIST) {
                 addNutMoreSatisfied();
                 System.out.println("più soddisfatti");
+            }else if (context == ClientContext.DIET){
+                System.out.println("Visualizza aggiornamenti Aggiornamenti");
             }
         });
 
