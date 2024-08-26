@@ -109,10 +109,15 @@ public abstract class HomePage extends JPanel {
     }
 
     public void setButtonAction(int index, ActionListener action) {
+        buttons.get(index).removeAll();
         buttons.get(index).addActionListener(action);
     }
 
     public void setButtonTitle(int index, String title) {
         buttons.get(index).setText(title);
+    }
+
+    public void removeListener(final int index){
+        buttons.get(index).removeActionListener(buttons.get(index).getAction());
     }
 }

@@ -170,9 +170,10 @@ public class MyDietDAO implements AutoCloseable {
                             rs.getString("Raggiunto"),
                             rs.getString("Descrizione"),
                             rs.getString("Peso"),
-                            rs.getString("Circ_punto_vita"),
                             rs.getString("Circ_braccio"),
-                            rs.getString("Circ_gambe"));
+                            rs.getString("Circ_gambe"),
+                            rs.getString("Circ_punto_vita")
+                    );
                 }
             }
         }

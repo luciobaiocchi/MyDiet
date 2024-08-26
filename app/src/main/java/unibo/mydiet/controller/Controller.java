@@ -40,6 +40,14 @@ public class Controller {
         }
     }
 
+    public String getUsrPsw (){
+        if (userLogged != null){
+            return userLogged.getCli().password();
+        } else {
+            return null;
+        }
+    }
+
     public Nutrizionist getNutrizionist(final String username) {
         try {
             return dao.getNutInfo(username);

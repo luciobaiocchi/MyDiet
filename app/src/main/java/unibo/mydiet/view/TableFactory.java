@@ -2,6 +2,7 @@ package unibo.mydiet.view;
 
 
 
+import unibo.mydiet.model.Goal;
 import unibo.mydiet.model.users.Client;
 import unibo.mydiet.model.users.Nutrizionist;
 
@@ -9,6 +10,7 @@ import javax.swing.*;
 import javax.swing.table.JTableHeader;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 
 public class TableFactory {
@@ -33,14 +35,13 @@ public class TableFactory {
 
     public static JTable getCliProfile(final Client cliente) {
         final String[][] data = {
-                {" ", "nome", cliente.nome(), " "},
-                {" ", "cognome", cliente.cognome(), " "},
-                {" ", "username", cliente.username(), " "},
-                {" ", "numeroTelefono", cliente.numeroTelefono(), " "},
-                {" ", "mail", cliente.mail(), " "},
-                {" ", "sesso", cliente.sesso(), " "},
-                {" ", "password", cliente.password(), " "},
-                {" ", "eta", String.valueOf(cliente.eta()), " "},
+                {" ", " nome", " " + cliente.nome(), " "},
+                {" ", " cognome", " " + cliente.cognome(), " "},
+                {" ", " username", " " + cliente.username(), " "},
+                {" ", " numeroTelefono", " " + cliente.numeroTelefono(), " "},
+                {" ", " mail", " " + cliente.mail(), " "},
+                {" ", " sesso", " " + cliente.sesso(), " "},
+                {" ", " eta", " " + cliente.eta(), " "},
         };
         JTable table = new JTable(data, new String[]{" "," "," "," "});
         table.setDragEnabled(true);
@@ -78,6 +79,32 @@ public class TableFactory {
         return table;
     }
 
+    public static JTable getGoalTable (final Goal goal){
+        final String[][] data = {
+                {" ", " Data Raggiungimento", " " + goal.dataRaggiungimento(), " "},
+                {" ", " Stato obbiettivo", " " + (Objects.equals(goal.raggiunto(), "S") ? "raggiunto" : "non raggiunto"), " "},
+                {" ", " Descrizione", " " + goal.descrizione(), " "},
+                {" ", " Peso", " " + goal.peso(), " "},
+                {" ", " Circonferenza Braccio", " " + goal.circBraccio(), " "},
+                {" ", " Circonferenza Gambe", " " + goal.circGambe(), " "},
+                {" ", " Circonferenza Punto Vita", " " + goal.circVita(), " "},
+        };
+        JTable table = new JTable(data, new String[]{" "," "," "," "});
+        table.setDragEnabled(true);
+        loadTable(table, 60);
+        return table;
+    }
+
+    public static JTable getPswTable (final String  psw){
+        final String[][] data = {
+                {" ", " Password", " " + psw, " "},
+        };
+        JTable table = new JTable(data, new String[]{" "," "," "," "});
+        table.setDragEnabled(true);
+        loadTable(table, 60);
+        return table;
+    }
+
 
     private static void  loadTable(JTable table, final int rowHeight) {
         JTableHeader header = table.getTableHeader();
@@ -90,5 +117,7 @@ public class TableFactory {
         table.setVisible(true);
         table.setOpaque(true);
     }
+
+
 
 }
