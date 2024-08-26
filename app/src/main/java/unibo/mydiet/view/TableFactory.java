@@ -20,7 +20,7 @@ public class TableFactory {
                 {" ", "Specializzazione", nutrizionist.specializzazione(), " "},
                 {" ", "nome", nutrizionist.nome(), " "},
                 {" ", "cognome", nutrizionist.cognome(), " "},
-                {" ", "username", nutrizionist.username(), " "},
+                {" ", "CliUsername", nutrizionist.username(), " "},
                 {" ", "numeroTelefono", nutrizionist.numeroTelefono(), " "},
                 {" ", "mail", nutrizionist.mail(), " "},
                 {" ", "sesso", nutrizionist.sesso(), " "},
@@ -37,7 +37,7 @@ public class TableFactory {
         final String[][] data = {
                 {" ", " nome", " " + cliente.nome(), " "},
                 {" ", " cognome", " " + cliente.cognome(), " "},
-                {" ", " username", " " + cliente.username(), " "},
+                {" ", " CliUsername", " " + cliente.username(), " "},
                 {" ", " numeroTelefono", " " + cliente.numeroTelefono(), " "},
                 {" ", " mail", " " + cliente.mail(), " "},
                 {" ", " sesso", " " + cliente.sesso(), " "},

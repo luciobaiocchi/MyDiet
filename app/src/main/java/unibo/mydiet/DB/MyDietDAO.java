@@ -260,24 +260,24 @@ public class MyDietDAO implements AutoCloseable {
 
 
 //    // Account
-//    public User getAccount(final String username) throws SQLException {
+//    public User getAccount(final String CliUsername) throws SQLException {
 //        String query = "SELECT Nome, Cognome, Targhetta FROM account "
 //                + "LEFT JOIN utente ON account.Username = utente.Username WHERE account.Username = ? ";
 //
 //        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-//            stmt.setString(1, username);
+//            stmt.setString(1, CliUsername);
 //            try (ResultSet rs = stmt.executeQuery()) {
 //                if (rs.next()) {
-//                    if (getAccountType(username) == AccountType.ADMIN) {
+//                    if (getAccountType(CliUsername) == AccountType.ADMIN) {
 //                        return new User(rs.getString("Nome"),
 //                                rs.getString("Cognome"),
-//                                username,
+//                                CliUsername,
 //                                "Amministratore"
 //                        );
 //                    }else {
 //                        return new User(rs.getString("Nome"),
 //                                rs.getString("Cognome"),
-//                                username,
+//                                CliUsername,
 //                                Objects.requireNonNullElse(rs.getString("Targhetta"), "N/A")
 //                        );
 //                    }
@@ -329,13 +329,13 @@ public class MyDietDAO implements AutoCloseable {
 //    }
 //
 //    // 5. Invio richieste da parte degli utenti
-//    public void sendRequest(final String username,
+//    public void sendRequest(final String CliUsername,
 //                            final String codiceRichiesta,
 //                            final String Tipologia,
 //                            final String Descrizione) throws SQLException {
 //        String query = "INSERT INTO RICHIESTE (Username, CodiceRichiesta,Tipologia, Stato, Descrizione) VALUES (?, ?, ?, ?, ?)";
 //        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-//            stmt.setString(1, username);
+//            stmt.setString(1, CliUsername);
 //            stmt.setString(2, codiceRichiesta);
 //            stmt.setString(3, Tipologia);
 //            stmt.setString(4, "In attesa");
@@ -390,10 +390,10 @@ public class MyDietDAO implements AutoCloseable {
 //    }
 //
 //    // 10. Assegnazione di una targhetta da parte di un amministratore ad un utente
-//    public void assignBadge(String username, String tipoTarghetta) throws SQLException {
+//    public void assignBadge(String CliUsername, String tipoTarghetta) throws SQLException {
 //        String query = "ALTER TABLE utente ADD COLUMN tipoTarghetta VARCHAR(255)";
 //        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-//            stmt.setString(1, username);
+//            stmt.setString(1, CliUsername);
 //            stmt.setString(2, tipoTarghetta);
 //            stmt.executeUpdate();
 //        }
