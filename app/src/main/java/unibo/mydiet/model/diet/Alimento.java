@@ -1,7 +1,7 @@
 package unibo.mydiet.model.diet;
 
 public record Alimento (String idAlimento,
-                       String peso,
+                       int peso,
                        String nome,
                        ValoriNutrizionali valoriNutrizionali) {
 }

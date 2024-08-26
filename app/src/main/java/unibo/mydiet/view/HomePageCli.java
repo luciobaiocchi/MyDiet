@@ -82,6 +82,9 @@ public class HomePageCli extends HomePage{
     private void showPsw(){
         super.addTable(TableFactory.getPswTable(controller.getUsrPsw()));
     }
+    private void addDiet(){
+        controller.getDiet();
+    }
 
 
 
@@ -110,6 +113,7 @@ public class HomePageCli extends HomePage{
                 addNutList();
                 System.out.println("Lista completa");
             } else if (context == ClientContext.DIET) {
+                addDiet();
                 System.out.println("Visualizza Dieta");
             }
         });
@@ -132,7 +136,7 @@ public class HomePageCli extends HomePage{
                 addNutMoreSatisfied();
                 System.out.println("più soddisfatti");
             }else if (context == ClientContext.DIET){
-                System.out.println("Visualizza aggiornamenti Aggiornamenti");
+                System.out.println("Visualizza Aggiornamenti");
             }
         });
 

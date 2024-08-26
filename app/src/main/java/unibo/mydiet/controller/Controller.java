@@ -1,8 +1,11 @@
 package unibo.mydiet.controller;
 
 import unibo.mydiet.DB.MyDietDAO;
+import unibo.mydiet.model.DietBuilder;
 import unibo.mydiet.model.Goal;
+import unibo.mydiet.model.diet.Dieta;
 import unibo.mydiet.model.users.*;
+import unibo.mydiet.view.PanelChangeSubject;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -13,6 +16,7 @@ public class Controller {
     private final MyDietDAO dao = new MyDietDAO();
     private UserLogged userLogged;
     boolean isLogged = false;
+    private final DietBuilder dietBuilder = new DietBuilder(dao);
 
     public Controller() {
     }
@@ -122,6 +126,15 @@ public class Controller {
     public Goal getCLientGoal(){
         try {
             return dao.getCliGoal(userLogged.getCli().username());
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+    public Dieta getDiet() {
+        try {
+            System.out.println(dao.getRowDiet(userLogged.getCli().username()));
+            return dietBuilder.buildDiet(userLogged.getCli().username());
         } catch (SQLException e) {
             return null;
         }
