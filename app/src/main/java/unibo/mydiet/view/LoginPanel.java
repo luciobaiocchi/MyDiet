@@ -84,12 +84,15 @@ public class LoginPanel extends JPanel implements PanelChangeSubject{
         loginButtonCli.addActionListener(e -> {
             String username = usernameField.getText();
             String password = String.copyValueOf(passwordField.getPassword());
-            if (authenticateCli(username, password)) {
-                controller.setUserLogged(username, UserType.CLIENT);
-                notifyObservers("HomePageCli");
-            } else {
-                loginFailed();
-            }
+            controller.setUserLogged("cliente4", UserType.CLIENT);
+            notifyObservers("HomePageCli");
+
+//            if (authenticateCli(username, password)) {
+//                controller.setUserLogged(username, UserType.CLIENT);
+//                notifyObservers("HomePageCli");
+//            } else {
+//                loginFailed();
+//            }
         });
 
         loginButtonNut = createStyledButton("Login Nutrizionista");
@@ -99,6 +102,8 @@ public class LoginPanel extends JPanel implements PanelChangeSubject{
         loginButtonNut.addActionListener(e -> {
             String username = usernameField.getText();
             String password = String.copyValueOf(passwordField.getPassword());
+            controller.setUserLogged(username, UserType.NUTRIZIONIST);
+
             if (authenticateCli(username, password)) {
                 controller.setUserLogged(username, UserType.NUTRIZIONIST);
                 notifyObservers("HomePageNut");

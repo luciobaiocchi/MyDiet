@@ -108,6 +108,13 @@ public abstract class HomePage extends JPanel {
         this.repaint();
     }
 
+    public void setCenterPanel(final JPanel panel){
+        centerPanel.removeAll();
+        centerPanel.add(panel);
+        this.revalidate();
+        this.repaint();
+    }
+
     public void setButtonAction(int index, ActionListener action) {
         buttons.get(index).removeAll();
         buttons.get(index).addActionListener(action);

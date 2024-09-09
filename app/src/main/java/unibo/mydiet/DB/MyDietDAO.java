@@ -205,7 +205,7 @@ public class MyDietDAO implements AutoCloseable {
 
     public List<Alimento> getFoodInRecipe(final String username, final String dataInizio, final String giorno, final String pasto) throws SQLException {
         final String query1 = """
-        SELECT 
+        SELECT
             c.IdAlimento,
             c.Peso,
             a.Nome AS NomeAlimento,
@@ -213,13 +213,13 @@ public class MyDietDAO implements AutoCloseable {
             a.Grammi_carboidrati,
             a.Grammi_grassi,
             a.Calorie_totali
-        FROM 
+        FROM
             MyDiet.CREAZIONE c
-        JOIN 
+        JOIN
             MyDiet.ALIMENTO a
-        ON 
+        ON
             c.IdAlimento = a.IdAlimento
-        WHERE 
+        WHERE
             c.INC_COM_Username = ?
             AND c.INC_COM_Data_inizio = ?
             AND c.INC_COM_Nome = ?

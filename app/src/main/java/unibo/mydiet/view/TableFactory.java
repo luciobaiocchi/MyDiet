@@ -3,6 +3,7 @@ package unibo.mydiet.view;
 
 
 import unibo.mydiet.model.Goal;
+import unibo.mydiet.model.diet.Dieta;
 import unibo.mydiet.model.users.Client;
 import unibo.mydiet.model.users.Nutrizionist;
 

@@ -30,7 +30,7 @@ public class HomePageCli extends HomePage{
             public void actionPerformed(java.awt.event.ActionEvent e) {
                 context = ClientContext.DIET;
                 setButtonsNames();
-                addTable();
+                addDiet();
                 System.out.println("Dieta e Aggiornamenti");
             }
         });
@@ -83,7 +83,8 @@ public class HomePageCli extends HomePage{
         super.addTable(TableFactory.getPswTable(controller.getUsrPsw()));
     }
     private void addDiet(){
-        controller.getDiet();
+        DietPanel dietPanel = new DietPanel(controller.getDiet());
+        super.setCenterPanel(dietPanel);
     }
 
 
