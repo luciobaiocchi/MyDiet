@@ -85,6 +85,8 @@ public class HomePageCli extends HomePage{
     private void addDiet(){
         DietPanel dietPanel = new DietPanel(controller.getDiet());
         super.setCenterPanel(dietPanel);
+        dietPanel.revalidate(); // Ensure the layout manager recalculates the layout
+        dietPanel.repaint();
     }
 
 

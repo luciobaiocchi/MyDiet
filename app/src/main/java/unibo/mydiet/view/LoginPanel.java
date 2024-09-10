@@ -102,14 +102,15 @@ public class LoginPanel extends JPanel implements PanelChangeSubject{
         loginButtonNut.addActionListener(e -> {
             String username = usernameField.getText();
             String password = String.copyValueOf(passwordField.getPassword());
-            controller.setUserLogged(username, UserType.NUTRIZIONIST);
+            controller.setUserLogged("nutrizionista4", UserType.NUTRIZIONIST);
+            notifyObservers("HomePageNut");
 
-            if (authenticateCli(username, password)) {
-                controller.setUserLogged(username, UserType.NUTRIZIONIST);
-                notifyObservers("HomePageNut");
-            } else {
-                loginFailed();
-            }
+//            if (authenticateCli(username, password)) {
+//                controller.setUserLogged(username, UserType.NUTRIZIONIST);
+//                notifyObservers("HomePageNut");
+//            } else {
+//                loginFailed();
+//            }
         });
 
         registerButton = createStyledButton("Register");
@@ -286,7 +287,6 @@ public class LoginPanel extends JPanel implements PanelChangeSubject{
         label.setFont((Constants.appFont).deriveFont(15f));
         loginFailedDialog.add(label);
         loginFailedDialog.setVisible(true);
-        this.add(loginFailedDialog);
         System.out.println("Login fallito");
     }
 }

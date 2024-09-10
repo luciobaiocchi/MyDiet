@@ -10,7 +10,7 @@ USE MyDiet;
 INSERT INTO NUTRIZIONISTA (Specializzazione, Numero_di_telefono, Mail, Username, Nome_, Cognome, Password, Sesso, Percentuale_soddisfatti, Media_stelle)
 VALUES
 	('specializzazione',0, 'admin.com','admin', 'nome', 'cognome', '1234', 'M', 0, 0),
-	('Dietetica', 987654324, 'nutrizionista4@example.com', 'nutrizionista4', 'Francesca', 'Gialli', 'password123', 'F', 80, 4),
+	('Dietetica', 987654324, 'nutrizionista4@example.com', 'nutrizionista4', 'Francesca', 'Gialli', '1', 'F', 80, 4),
 	('Nutrizione sportiva', 987654325, 'nutrizionista5@example.com', 'nutrizionista5', 'Paolo', 'Verdi', 'password456', 'M', 55, 5),
 	('Nutrizione clinica', 987654326, 'nutrizionista6@example.com', 'nutrizionista6', 'Chiara', 'Rossi', 'password789', 'F', 0, 4),
 	('Dietetica', 987654327, 'nutrizionista7@example.com', 'nutrizionista7', 'Fabio', 'Bianchi', 'password123', 'M', 0, 4),

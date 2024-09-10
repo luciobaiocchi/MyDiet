@@ -21,7 +21,7 @@ public class MainFrame extends JFrame implements unibo.mydiet.view.api.MainFrame
         contentPane.add(homePageCli, "HomePageCli");
         contentPane.add(homePageNut, "HomePageNut");
 
-        this.setSize(1400, 900);
+        this.setSize(1200, 800);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocation(300, 100);
         this.setVisible(true);
