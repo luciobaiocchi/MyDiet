@@ -5,6 +5,7 @@ import unibo.mydiet.model.users.Nutrizionist;
 import unibo.mydiet.model.users.UserType;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class HomePageNut extends HomePage {
     private final Controller controller;
@@ -40,15 +41,7 @@ public class HomePageNut extends HomePage {
         });
     }
 
-    @Override
-    public void addTable() {
-        if (controller.getUserLogged().isPresent() && controller.getUserLogged().get().getType() == UserType.NUTRIZIONIST) {
-            final Nutrizionist nutrizionist = controller.getUserLogged().get().getNut();
-            System.out.println(nutrizionist);
-            JTable table = TableFactory.getNutProfile(nutrizionist);
-            super.addTable(table);
-        }
-    }
+
 
     private void setButtonsNames() {
         if (context == NutContext.HOME_PAGE) {
@@ -69,11 +62,13 @@ public class HomePageNut extends HomePage {
     private void setButtonsActions(){
         super.setButtonAction(0, e -> {
             if (context == NutContext.HOME_PAGE) {
+                addTable();
                 System.out.println("Dati Personali");
             } else if (context == NutContext.VIEW_CLIENT) {
                 System.out.println("Lista completa");
             } else if (context == NutContext.MODIFY_PROFILE) {;
                 System.out.println("Modifica Password");
+                setCenterPanel(getPswPanel());
             }
         });
         super.setButtonAction(1, e -> {
@@ -89,6 +84,7 @@ public class HomePageNut extends HomePage {
         super.setButtonAction(2, e -> {
             if (context == NutContext.HOME_PAGE) {
                 System.out.println("Visualiza Password");
+                showPsw();
             }else if (context == NutContext.VIEW_CLIENT) {
                 System.out.println("Modifica Dieta");
             }else if (context == NutContext.MODIFY_PROFILE){
@@ -102,6 +98,40 @@ public class HomePageNut extends HomePage {
         if (controller.getNutFormation().isPresent()){
             JTable table = TableFactory.getFormationTable(controller.getNutFormation().get());
             addTable(table);
+        }
+    }
+    private void showPsw(){
+        addTable(TableFactory.getPswTable(controller.getUserLogged().get().getNut().getPassword()));
+    }
+
+    private JPanel getPswPanel(){
+        JPanel panel = new JPanel();
+        JLabel label = new JLabel("Inserisci nuova password");
+        JTextField psw = new JTextField();
+        JButton save = new JButton("Salva");
+
+        label.setFont(label.getFont().deriveFont(16f));
+        psw.setFont(psw.getFont().deriveFont(16f));
+        save.setFont(save.getFont().deriveFont(16f));
+        psw.setPreferredSize(new Dimension(200, 30));
+        save.addActionListener(e -> {
+            System.out.println(psw.getText());
+            if (controller.updateNutPsw(psw.getText())){
+                JOptionPane.showMessageDialog(null, "Password aggiornata con successo");
+            };
+        });
+        panel.add(label);
+        panel.add(psw);
+        panel.add(save);
+        return panel;
+    }
+    @Override
+    public void addTable() {
+        if (controller.getUserLogged().isPresent() && controller.getUserLogged().get().getType() == UserType.NUTRIZIONIST) {
+            final Nutrizionist nutrizionist = controller.getUserLogged().get().getNut();
+            System.out.println(nutrizionist);
+            JTable table = TableFactory.getNutProfile(nutrizionist);
+            super.addTable(table);
         }
     }
 }

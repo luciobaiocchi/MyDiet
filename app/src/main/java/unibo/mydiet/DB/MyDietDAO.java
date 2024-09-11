@@ -75,16 +75,16 @@ public class MyDietDAO implements AutoCloseable {
                 "Cognome, Password, Sesso, Percentuale_soddisfatti, Media_stelle) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, nutrizionist.specializzazione());
-            stmt.setString(2, String.valueOf(nutrizionist.numeroTelefono()));
-            stmt.setString(3, nutrizionist.mail());
-            stmt.setString(4, nutrizionist.username());
-            stmt.setString(5, nutrizionist.nome());
-            stmt.setString(6, nutrizionist.cognome());
-            stmt.setString(7, nutrizionist.password());
-            stmt.setString(8, String.valueOf(nutrizionist.sesso()));
-            stmt.setString(9, String.valueOf(nutrizionist.percentualeSoddisfatti()));
-            stmt.setString(10, String.valueOf(nutrizionist.mediaStelle()));
+            stmt.setString(1, nutrizionist.getSpecializzazione());
+            stmt.setString(2, String.valueOf(nutrizionist.getNumeroTelefono()));
+            stmt.setString(3, nutrizionist.getMail());
+            stmt.setString(4, nutrizionist.getUsername());
+            stmt.setString(5, nutrizionist.getNome());
+            stmt.setString(6, nutrizionist.getCognome());
+            stmt.setString(7, nutrizionist.getPassword());
+            stmt.setString(8, String.valueOf(nutrizionist.getSesso()));
+            stmt.setString(9, String.valueOf(nutrizionist.getPercentualeSoddisfatti()));
+            stmt.setString(10, String.valueOf(nutrizionist.getMediaStelle()));
 
             stmt.executeUpdate();  // Esegui l'operazione di inserimento
         }catch (SQLException e){
@@ -275,6 +275,40 @@ public class MyDietDAO implements AutoCloseable {
         }
         return null;
     }
+    // Client Info
+    public String getNutPsw(final String username) throws SQLException {
+        final String query = "SELECT Password FROM MyDiet.NUTRIZIONISTA\n" +
+                "WHERE Username = ?;";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, username);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("Password");
+                }
+            }
+        }
+        catch (SQLException e){
+            return null;
+        }
+        return null;
+    }
+    // Client Info
+    public String getCliPsw(final String username) throws SQLException {
+        final String query = "SELECT Password FROM MyDiet.CLIENTE\n" +
+                "WHERE Username = ?;";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, username);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("Password");
+                }
+            }
+        }
+        catch (SQLException e){
+            return null;
+        }
+        return null;
+    }
 
     // Client Goal
     public Goal getCliGoal(final String username) throws SQLException {
@@ -322,7 +356,7 @@ public class MyDietDAO implements AutoCloseable {
         final String query = "SELECT * FROM MyDiet.PERCORSO_DI_FORMAZIONE\n" +
                 "WHERE Username = ?;";
         List<PercorsoFormazione> percorsoFormaziones = new ArrayList<>();
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {;
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, username);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
@@ -339,6 +373,19 @@ public class MyDietDAO implements AutoCloseable {
             return null;
         }
         return percorsoFormaziones;
+    }
+
+    public boolean setNutPsw(final String password, final String username) throws SQLException {
+        final String query = "UPDATE NUTRIZIONISTA SET Password = ? WHERE Username = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, password);
+            stmt.setString(2, username);
+            int rowsUpdated = stmt.executeUpdate();
+            return rowsUpdated > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
 

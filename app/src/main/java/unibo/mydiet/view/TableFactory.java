@@ -19,16 +19,16 @@ public class TableFactory {
 
     public static JTable getNutProfile(final Nutrizionist nutrizionist) {
         final String[][] data = {
-                {" ", "Specializzazione", nutrizionist.specializzazione(), " "},
-                {" ", "nome", nutrizionist.nome(), " "},
-                {" ", "cognome", nutrizionist.cognome(), " "},
-                {" ", "CliUsername", nutrizionist.username(), " "},
-                {" ", "numeroTelefono", nutrizionist.numeroTelefono(), " "},
-                {" ", "mail", nutrizionist.mail(), " "},
-                {" ", "sesso", nutrizionist.sesso(), " "},
-                {" ", "password", nutrizionist.password(), " "},
-                {" ", "media Stelle", nutrizionist.mediaStelle(), " "},
-                {" ", "Clienti a obbiettivo", nutrizionist.percentualeSoddisfatti() + "%", " "},
+                {" ", "Specializzazione", nutrizionist.getSpecializzazione(), " "},
+                {" ", "nome", nutrizionist.getNome(), " "},
+                {" ", "cognome", nutrizionist.getCognome(), " "},
+                {" ", "CliUsername", nutrizionist.getUsername(), " "},
+                {" ", "numeroTelefono", nutrizionist.getNumeroTelefono(), " "},
+                {" ", "mail", nutrizionist.getMail(), " "},
+                {" ", "sesso", nutrizionist.getSesso(), " "},
+                {" ", "password", nutrizionist.getPassword(), " "},
+                {" ", "media Stelle", nutrizionist.getMediaStelle(), " "},
+                {" ", "Clienti a obbiettivo", nutrizionist.getPercentualeSoddisfatti() + "%", " "},
         };
         JTable table = new JTable(data, new String[]{"","","",""});
         loadTable(table, 60);
@@ -54,10 +54,10 @@ public class TableFactory {
     public static JTable getNutList (final List<Nutrizionist> nutrizionists) {
         final String[][] data = new String[nutrizionists.size()][4];
         for (int i = 0; i < nutrizionists.size(); i++) {
-            data[i][0] = " " + nutrizionists.get(i).nome();
-            data[i][1] = " " + nutrizionists.get(i).cognome();
-            data[i][2] = " " + nutrizionists.get(i).specializzazione();
-            data[i][3] = " " + nutrizionists.get(i).mediaStelle();
+            data[i][0] = " " + nutrizionists.get(i).getNome();
+            data[i][1] = " " + nutrizionists.get(i).getCognome();
+            data[i][2] = " " + nutrizionists.get(i).getSpecializzazione();
+            data[i][3] = " " + nutrizionists.get(i).getMediaStelle();
         }
         String [] columns = {"Nome", "Cognome", "Specializzazione", "Media Stelle"};
         JTable table = new JTable(data, columns);
@@ -69,10 +69,10 @@ public class TableFactory {
     public static JTable getNutListMostSatisied (final List<Nutrizionist> nutrizionists) {
         final String[][] data = new String[nutrizionists.size()][4];
         for (int i = 0; i < nutrizionists.size(); i++) {
-            data[i][0] = " " + nutrizionists.get(i).nome();
-            data[i][1] = " " + nutrizionists.get(i).cognome();
-            data[i][2] = " " + nutrizionists.get(i).specializzazione();
-            data[i][3] = " " + nutrizionists.get(i).percentualeSoddisfatti();
+            data[i][0] = " " + nutrizionists.get(i).getNome();
+            data[i][1] = " " + nutrizionists.get(i).getCognome();
+            data[i][2] = " " + nutrizionists.get(i).getSpecializzazione();
+            data[i][3] = " " + nutrizionists.get(i).getPercentualeSoddisfatti();
         }
         String [] columns = {"Nome", "Cognome", "Specializzazione", "Percentuale Soddisfatti"};
         JTable table = new JTable(data, columns);
@@ -122,7 +122,6 @@ public class TableFactory {
         return table;
     }
 
-
     private static void  loadTable(JTable table, final int rowHeight) {
         JTableHeader header = table.getTableHeader();
         header.setFont(Constants.appFont);
@@ -134,7 +133,4 @@ public class TableFactory {
         table.setVisible(true);
         table.setOpaque(true);
     }
-
-
-
 }

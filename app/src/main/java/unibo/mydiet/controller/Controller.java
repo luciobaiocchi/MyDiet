@@ -141,9 +141,21 @@ public class Controller {
     }
     public Optional<List<PercorsoFormazione>> getNutFormation(){
         try {
-            return Optional.of(dao.getNutFormation(userLogged.getNut().username()));
+            return Optional.of(dao.getNutFormation(userLogged.getNut().getUsername()));
         } catch (SQLException e) {
             return Optional.empty();
+        }
+    }
+
+    public boolean updateNutPsw(final String newPsw){
+        try {
+            if(dao.setNutPsw(newPsw, userLogged.getNut().getUsername())){
+                getUserLogged().get().getNut().setPassword(newPsw);
+                return true;
+            };
+            return false;
+        } catch (SQLException e) {
+            return false;
         }
     }
 
