@@ -7,6 +7,7 @@ import unibo.mydiet.model.diet.Ricetta;
 import unibo.mydiet.model.diet.ValoriNutrizionali;
 import unibo.mydiet.model.users.Client;
 import unibo.mydiet.model.users.Nutrizionist;
+import unibo.mydiet.model.users.PercorsoFormazione;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -203,6 +204,8 @@ public class MyDietDAO implements AutoCloseable {
         return null;
     }
 
+
+
     public List<Alimento> getFoodInRecipe(final String username, final String dataInizio, final String giorno, final String pasto) throws SQLException {
         final String query1 = """
         SELECT
@@ -312,6 +315,30 @@ public class MyDietDAO implements AutoCloseable {
             return null;
         }
         return nutrizionists;
+    }
+
+    // Client Info
+    public List<PercorsoFormazione> getNutFormation(final String username) throws SQLException {
+        final String query = "SELECT * FROM MyDiet.PERCORSO_DI_FORMAZIONE\n" +
+                "WHERE Username = ?;";
+        List<PercorsoFormazione> percorsoFormaziones = new ArrayList<>();
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {;
+            stmt.setString(1, username);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    percorsoFormaziones.add(new PercorsoFormazione(
+                            rs.getString("Nome_percorso"),
+                            rs.getString("Data_inizio"),
+                            rs.getString("Data_fine"),
+                            rs.getString("Voto_conseguito")
+                    ));
+                }
+            }
+        }
+        catch (SQLException e){
+            return null;
+        }
+        return percorsoFormaziones;
     }
 
 

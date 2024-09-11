@@ -6,6 +6,7 @@ import unibo.mydiet.model.Goal;
 import unibo.mydiet.model.diet.Dieta;
 import unibo.mydiet.model.users.Client;
 import unibo.mydiet.model.users.Nutrizionist;
+import unibo.mydiet.model.users.PercorsoFormazione;
 
 import javax.swing.*;
 import javax.swing.table.JTableHeader;
@@ -103,6 +104,21 @@ public class TableFactory {
         JTable table = new JTable(data, new String[]{" "," "," "," "});
         table.setDragEnabled(true);
         loadTable(table, 60);
+        return table;
+    }
+
+    public static JTable getFormationTable(final List<PercorsoFormazione> formations) {
+        final String[][] data = new String[formations.size()][4];
+        for (int i = 0; i < formations.size(); i++) {
+            data[i][0] = " " + formations.get(i).nome();
+            data[i][1] = " " + formations.get(i).dataInizio();
+            data[i][2] = " " + formations.get(i).dataFine();
+            data[i][3] = " " + formations.get(i).voto();
+        }
+        String [] columns = {"Nome", "Data Inizio", "Data Fine", "voto"};
+        JTable table = new JTable(data, columns);
+        table.setDragEnabled(true);
+        loadTable(table, 40);
         return table;
     }
 

@@ -139,5 +139,12 @@ public class Controller {
             return null;
         }
     }
+    public Optional<List<PercorsoFormazione>> getNutFormation(){
+        try {
+            return Optional.of(dao.getNutFormation(userLogged.getNut().username()));
+        } catch (SQLException e) {
+            return Optional.empty();
+        }
+    }
 
 }
