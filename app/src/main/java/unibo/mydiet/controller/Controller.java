@@ -5,11 +5,10 @@ import unibo.mydiet.model.DietBuilder;
 import unibo.mydiet.model.Goal;
 import unibo.mydiet.model.diet.Dieta;
 import unibo.mydiet.model.users.*;
-import unibo.mydiet.view.PanelChangeSubject;
 
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 
 public class Controller {
@@ -156,6 +155,34 @@ public class Controller {
             return false;
         } catch (SQLException e) {
             return false;
+        }
+    }
+
+    public void updateNutTari(){
+        try {
+            final List<Tariffa> newTariffario = dao.getNutTarif(userLogged.getNut().getUsername());
+            userLogged.getNut().updateTariffa(newTariffario);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public boolean updateTariffaDB(Tariffa tariffa) {
+        String username = userLogged.getNut().getUsername();
+        double prezzo = tariffa.getPrezzo();
+        int durata = tariffa.getDurata();
+        return dao.updateNutTariff(username, prezzo, durata);
+    }
+
+    public boolean addPercorsoFormazione(PercorsoFormazione percorso) {
+        return dao.addPercorsoFormazione(percorso, userLogged.getNut().getUsername());
+    }
+
+    public List<String> getClientUsernames() {
+        try {
+            return dao.getClientUsernames(userLogged.getNut().getUsername());
+        } catch (SQLException e) {
+            return Collections.emptyList();
         }
     }
 

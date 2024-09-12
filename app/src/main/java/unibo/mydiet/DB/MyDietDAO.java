@@ -8,6 +8,7 @@ import unibo.mydiet.model.diet.ValoriNutrizionali;
 import unibo.mydiet.model.users.Client;
 import unibo.mydiet.model.users.Nutrizionist;
 import unibo.mydiet.model.users.PercorsoFormazione;
+import unibo.mydiet.model.users.Tariffa;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -275,6 +276,25 @@ public class MyDietDAO implements AutoCloseable {
         }
         return null;
     }
+
+    public List<Tariffa> getNutTarif(final String username) throws SQLException {
+        final String query = "SELECT Durata_mesi, Prezzo FROM MyDiet.TARIFFA WHERE Username = ?";
+        List<Tariffa> tariffe = new ArrayList<>();
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, username);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    int durata = rs.getInt("Durata_mesi");
+                    double prezzo = rs.getDouble("Prezzo");
+                    tariffe.add(new Tariffa(durata, prezzo));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return tariffe;
+    }
     // Client Info
     public String getNutPsw(final String username) throws SQLException {
         final String query = "SELECT Password FROM MyDiet.NUTRIZIONISTA\n" +
@@ -388,7 +408,19 @@ public class MyDietDAO implements AutoCloseable {
         }
     }
 
-
+    public boolean updateNutTariff(final String username, final double prezzo, final int durata) {
+    final String query = "UPDATE MyDiet.TARIFFA SET Prezzo = ? WHERE Username = ? AND Durata_mesi = ?";
+    try (PreparedStatement stmt = connection.prepareStatement(query)) {
+        stmt.setDouble(1, prezzo);
+        stmt.setString(2, username);
+        stmt.setInt(3, durata);
+        int rowsUpdated = stmt.executeUpdate();
+        return rowsUpdated > 0;
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
+    }
+}
     //8. Visualizzare i 10 migliori nutrizionisti (quelli con la media di stelle più alta)
 
 
@@ -430,8 +462,37 @@ public class MyDietDAO implements AutoCloseable {
         return nutrizionists;
     }
 
+    public boolean addPercorsoFormazione(PercorsoFormazione percorso, String username) {
+        final String query = "INSERT INTO MyDiet.PERCORSO_DI_FORMAZIONE (Nome_percorso, Data_inizio, Data_fine, Voto_conseguito, Username) VALUES (?, ?, ?, ?, ?)";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, percorso.nome());
+            stmt.setString(2, percorso.dataInizio());
+            stmt.setString(3, percorso.dataFine());
+            stmt.setString(4, percorso.voto());
+            stmt.setString(5, username);
+            int rowsInserted = stmt.executeUpdate();
+            return rowsInserted > 0;
+        } catch (SQLException e) {;
+            return false;
+        }
+    }
 
-
+    public List<String> getClientUsernames(String nutritionistUsername) throws SQLException {
+        final String query = "SELECT DISTINCT Username FROM MyDiet.DIETA WHERE SVI_Username = ?";
+        List<String> clientUsernames = new ArrayList<>();
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, nutritionistUsername);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    clientUsernames.add(rs.getString("Username"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return clientUsernames;
+    }
     private Nutrizionist buildNutrizionist(ResultSet rs) throws SQLException {
         return new Nutrizionist(
                 rs.getString("Specializzazione"),

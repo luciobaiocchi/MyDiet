@@ -1,5 +1,10 @@
 package unibo.mydiet.model.users;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+
 public class Nutrizionist implements User {
     private String specializzazione;
     private String nome;
@@ -11,6 +16,9 @@ public class Nutrizionist implements User {
     private String sesso;
     private String percentualeSoddisfatti;
     private String mediaStelle;
+    private List<Tariffa> tariffe;
+
+
 
     public Nutrizionist(String specializzazione, String nome, String cognome, String username, String password, String numeroTelefono, String mail, String sesso, String percentualeSoddisfatti, String mediaStelle) {
         if (specializzazione == null || specializzazione.isBlank()) {
@@ -41,6 +49,8 @@ public class Nutrizionist implements User {
         this.sesso = sesso;
         this.percentualeSoddisfatti = percentualeSoddisfatti;
         this.mediaStelle = mediaStelle;
+        this.tariffe = new ArrayList<>();
+
     }
 
     public String getSpecializzazione() {
@@ -137,10 +147,28 @@ public class Nutrizionist implements User {
         return mediaStelle;
     }
 
-    public void setMediaStelle(String mediaStelle) {
-        this.mediaStelle = mediaStelle;
+    public List<Tariffa> getTariffe() {
+        return new ArrayList<>(tariffe);
     }
 
+    public void setTariffe(List<Tariffa> tariffe) {
+        this.tariffe = new ArrayList<>(tariffe);
+        this.tariffe.sort(Comparator.comparingInt(Tariffa::getDurata));
+    }
+
+    public void addTariffa(Tariffa tariffa) {
+        this.tariffe.add(tariffa);
+        this.tariffe.sort(Comparator.comparingInt(Tariffa::getDurata));
+    }
+
+    public void removeTariffa(Tariffa tariffa) {
+        this.tariffe.remove(tariffa);
+    }
+
+    public void updateTariffa(List<Tariffa> tariffario) {
+        this.tariffe = new ArrayList<>(tariffario);
+        this.tariffe.sort(Comparator.comparingInt(Tariffa::getDurata));
+    }
     @Override
     public UserType getType() {
         return UserType.NUTRIZIONIST;

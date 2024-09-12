@@ -122,6 +122,19 @@ public class TableFactory {
         return table;
     }
 
+    public static JTable getClientListTable(List<String> clientUsernames) {
+        final String[][] data = new String[clientUsernames.size()][1];
+        String[] columnNames = {"Client Username"};
+        for (int i = 0; i < clientUsernames.size(); i++) {
+            data[i][0] = " " + clientUsernames.get(i);
+        }
+        JTable table = new JTable(data, columnNames);
+        table.setDragEnabled(true);
+        loadTable(table, 40);
+
+        return table;
+    }
+
     private static void  loadTable(JTable table, final int rowHeight) {
         JTableHeader header = table.getTableHeader();
         header.setFont(Constants.appFont);

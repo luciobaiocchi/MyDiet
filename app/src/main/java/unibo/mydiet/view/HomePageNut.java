@@ -26,22 +26,20 @@ public class HomePageNut extends HomePage {
         setButtonsNames();
         setButtonAction(3, e -> {
             context = NutContext.MODIFY_PROFILE;
-            setButtonsNames();
             System.out.println("Modifica profilo");
+            setButtonsNames();
         });
         setButtonAction(4, e -> {
             context = NutContext.VIEW_CLIENT;
-            setButtonsNames();
             System.out.println("Visualizza Clienti");
+            setButtonsNames();
         });
         setButtonAction(5, e -> {
             context = NutContext.HOME_PAGE;
-            setButtonsNames();
             System.out.println("Visualizza Profilo");
+            setButtonsNames();
         });
     }
-
-
 
     private void setButtonsNames() {
         if (context == NutContext.HOME_PAGE) {
@@ -62,10 +60,11 @@ public class HomePageNut extends HomePage {
     private void setButtonsActions(){
         super.setButtonAction(0, e -> {
             if (context == NutContext.HOME_PAGE) {
-                addTable();
                 System.out.println("Dati Personali");
+                addTable();
             } else if (context == NutContext.VIEW_CLIENT) {
                 System.out.println("Lista completa");
+                visualizeClientList();
             } else if (context == NutContext.MODIFY_PROFILE) {;
                 System.out.println("Modifica Password");
                 setCenterPanel(getPswPanel());
@@ -73,12 +72,14 @@ public class HomePageNut extends HomePage {
         });
         super.setButtonAction(1, e -> {
             if (context == NutContext.HOME_PAGE) {
-                addFormation();
                 System.out.println("Percorsi Formazione");
+                addFormation();
             } else if (context == NutContext.VIEW_CLIENT) {
                 System.out.println("Obbiettivo/Aggiornamenti");
+                createSearchPanel();
             } else if (context == NutContext.MODIFY_PROFILE){
                 System.out.println("Modifica Tariffario");
+                visualizeTarifPanel();
             }
         });
         super.setButtonAction(2, e -> {
@@ -89,6 +90,7 @@ public class HomePageNut extends HomePage {
                 System.out.println("Modifica Dieta");
             }else if (context == NutContext.MODIFY_PROFILE){
                 System.out.println("Aggiungi Percorso");
+                addPercorsoFormazionePanel();
             }
         });
 
@@ -124,6 +126,27 @@ public class HomePageNut extends HomePage {
         panel.add(psw);
         panel.add(save);
         return panel;
+    }
+
+    private void visualizeTarifPanel() {
+        controller.updateNutTari();
+        TariffarioPanel tariffarioPanel = new TariffarioPanel(controller);
+        setCenterPanel(tariffarioPanel);
+    }
+
+    private void addPercorsoFormazionePanel() {
+        PercorsoFormazionePanel percorsoFormazionePanel = new PercorsoFormazionePanel(controller);
+        setCenterPanel(percorsoFormazionePanel);
+    }
+
+    private void visualizeClientList() {
+        JTable table = TableFactory.getClientListTable(controller.getClientUsernames());
+        super.addTable(table);
+    }
+
+    private void createSearchPanel() {
+        JPanel searchPanel = new GoalViewPanel(controller);
+        setCenterPanel(searchPanel);
     }
     @Override
     public void addTable() {
