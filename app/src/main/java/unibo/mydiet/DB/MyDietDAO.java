@@ -698,6 +698,28 @@ public class MyDietDAO implements AutoCloseable {
         }
         return null;
     }
+
+    public boolean saveClientUpdate(String username, String data, String descrizione, int peso, int circPuntoVita, int circBraccio, int circGambe) {
+    final String insertUpdateQuery = """
+        INSERT INTO AGGIORNAMENTO (Username, Data, Descrizione, Peso, Circ_punto_vita, Circ_braccio, Circ_gambe)
+        VALUES (?, ?, ?, ?, ?, ?, ?);
+    """;
+
+    try (PreparedStatement stmt = connection.prepareStatement(insertUpdateQuery)) {
+        stmt.setString(1, username);
+        stmt.setString(2, data);
+        stmt.setString(3, descrizione);
+        stmt.setInt(4, peso);
+        stmt.setInt(5, circPuntoVita);
+        stmt.setInt(6, circBraccio);
+        stmt.setInt(7, circGambe);
+        stmt.executeUpdate();
+        return true;
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
+    }
+}
 }
 
 

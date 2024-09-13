@@ -55,6 +55,65 @@ public class HomePageCli extends HomePage{
             addTable(table);
         }
     }
+
+
+
+    private void setButtonsNames() {
+        if (context == ClientContext.HOME_PAGE) {
+            setButtonTitle(0, "Dati Personali");
+            setButtonTitle(1, "Visualiza Obbiettivo");
+            setButtonTitle(2, "Visualiza Password");
+        } else if (context == ClientContext.NUTRIZIONIST) {
+            setButtonTitle(0,"Lista completa");
+            setButtonTitle(1,"Più stellati");
+            setButtonTitle(2,"Più soddisfatti");
+        }else if (context == ClientContext.DIET) {
+            setButtonTitle(0,"Visualizza Dieta");
+            setButtonTitle(1,"Carica aggiornamento");
+            setButtonTitle(2,"visualizza aggiornamenti");
+        }
+    }
+
+    private void setButtonsActions(){
+        setButtonAction(0, e -> {
+            if (context == ClientContext.HOME_PAGE) {
+                System.out.println("Dati Personali");
+                addTable();
+            } else if (context == ClientContext.NUTRIZIONIST) {
+                System.out.println("Lista completa");
+                addNutList();
+            } else if (context == ClientContext.DIET) {
+                System.out.println("Visualizza Dieta");
+                addDiet();
+            }
+        });
+        setButtonAction(1, e -> {
+            if (context == ClientContext.HOME_PAGE) {
+                System.out.println("Visualizza Obbiettivo");
+                addGoal();
+            } else if (context == ClientContext.NUTRIZIONIST) {
+                System.out.println("Più stellati");
+                addNutHigerRating();
+            } else if (context == ClientContext.DIET){
+                System.out.println("carica aggiornamenti");
+                addNuewUpdate();
+            }
+        });
+        setButtonAction(2, e -> {
+            if (context == ClientContext.HOME_PAGE) {
+                System.out.println("visualizza psw");
+                showPsw();
+            }else if (context == ClientContext.NUTRIZIONIST) {
+                System.out.println("più soddisfatti");
+                addNutMoreSatisfied();
+            }else if (context == ClientContext.DIET){
+                System.out.println("Visualizza Aggiornamenti");
+                addClientUpdates();
+            }
+        });
+
+    }
+
     private void addNutList() {
         System.out.println("addNutList");
         addTable(TableFactory.getNutList(controller.getNutrizionists()));
@@ -79,61 +138,17 @@ public class HomePageCli extends HomePage{
         dietPanel.revalidate(); // Ensure the layout manager recalculates the layout
         dietPanel.repaint();
     }
-
-
-
-    private void setButtonsNames() {
-        if (context == ClientContext.HOME_PAGE) {
-            setButtonTitle(0, "Dati Personali");
-            setButtonTitle(1, "Visualiza Obbiettivo");
-            setButtonTitle(2, "Visualiza Password");
-        } else if (context == ClientContext.NUTRIZIONIST) {
-            setButtonTitle(0,"Lista completa");
-            setButtonTitle(1,"Più stellati");
-            setButtonTitle(2,"Più soddisfatti");
-        }else if (context == ClientContext.DIET) {
-            setButtonTitle(0,"Visualizza Dieta");
-            setButtonTitle(1,"Carica aggiornamento");
-            setButtonTitle(2,"visualizza aggiornamenti");
-        }
+    private void addClientUpdates() {
+        System.out.println("Visualizza Aggiornamenti");
+        addTable(TableFactory.getAggiornamentiTable(controller.getCLientAggiornamento(controller.getUserLogged()
+                .get().getCli().username())));
     }
-
-    private void setButtonsActions(){
-        setButtonAction(0, e -> {
-            if (context == ClientContext.HOME_PAGE) {
-                addTable();
-                System.out.println("Dati Personali");
-            } else if (context == ClientContext.NUTRIZIONIST) {
-                addNutList();
-                System.out.println("Lista completa");
-            } else if (context == ClientContext.DIET) {
-                addDiet();
-                System.out.println("Visualizza Dieta");
-            }
-        });
-        setButtonAction(1, e -> {
-            if (context == ClientContext.HOME_PAGE) {
-                addGoal();
-                System.out.println("Visualizza Obbiettivo");
-            } else if (context == ClientContext.NUTRIZIONIST) {
-                addNutHigerRating();
-                System.out.println("Più stellati");
-            } else if (context == ClientContext.DIET){
-                System.out.println("carica aggiornamenti");
-            }
-        });
-        setButtonAction(2, e -> {
-            if (context == ClientContext.HOME_PAGE) {
-                showPsw();
-                System.out.println("visualizza psw");
-            }else if (context == ClientContext.NUTRIZIONIST) {
-                addNutMoreSatisfied();
-                System.out.println("più soddisfatti");
-            }else if (context == ClientContext.DIET){
-                System.out.println("Visualizza Aggiornamenti");
-            }
-        });
-
+    private void addNuewUpdate(){
+        InsertUpdatePanel insertUpdatePanel = new InsertUpdatePanel(controller);
+        setCenterPanel(insertUpdatePanel);
+        insertUpdatePanel.revalidate(); // Ensure the layout manager recalculates the layout
+        insertUpdatePanel.repaint();
+        System.out.println("Carica aggiornamenti");
     }
 
 }

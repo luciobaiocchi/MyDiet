@@ -209,4 +209,8 @@ public class Controller {
             return Collections.emptyList();
         }
     }
+
+    public boolean saveClientUpdate(String username, String data, String descrizione, int peso, int circPuntoVita, int circBraccio, int circGambe) {
+    return dao.saveClientUpdate(username, data, descrizione, peso, circPuntoVita, circBraccio, circGambe);
+}
 }
