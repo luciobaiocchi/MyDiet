@@ -100,15 +100,13 @@ public class LoginPanel extends JPanel implements PanelChangeSubject{
         loginButtonNut.addActionListener(e -> {
             String username = usernameField.getText();
             String password = String.copyValueOf(passwordField.getPassword());
-            controller.setUserLogged("nutrizionista4", UserType.NUTRIZIONIST);
-            notifyObservers("HomePageNut");
 
-//            if (authenticateNut(username, password)) {
-//                controller.setUserLogged(username, UserType.NUTRIZIONIST);
-//                notifyObservers("HomePageNut");
-//            } else {
-//                loginFailed();
-//            }
+            if (authenticateNut(username, password)) {
+                controller.setUserLogged(username, UserType.NUTRIZIONIST);
+                notifyObservers("HomePageNut");
+            } else {
+                loginFailed();
+            }
         });
 
         registerButton = createStyledButton("Register");

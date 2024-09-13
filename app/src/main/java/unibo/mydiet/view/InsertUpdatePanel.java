@@ -31,27 +31,43 @@ public class InsertUpdatePanel extends JPanel {
         circBraccioField = new JTextField();
         circGambeField = new JTextField();
 
+        // Set font for input fields
+        Font appFont = Constants.appFont;
+        usernameField.setFont(appFont);
+        dataField.setFont(appFont);
+        descrizioneField.setFont(appFont);
+        pesoField.setFont(appFont);
+        circPuntoVitaField.setFont(appFont);
+        circBraccioField.setFont(appFont);
+        circGambeField.setFont(appFont);
+
         // Create save button
         saveButton = new JButton("Salva Aggiornamento");
-        saveButton.setFont(saveButton.getFont().deriveFont(16f));
+        saveButton.setFont(appFont);
         saveButton.addActionListener(new SaveButtonListener());
 
         // Add components to the panel
-        this.add(new JLabel("Username:"));
+        this.add(createStyledLabel("Username:"));
         this.add(usernameField);
-        this.add(new JLabel("Data:"));
+        this.add(createStyledLabel("Data:"));
         this.add(dataField);
-        this.add(new JLabel("Descrizione:"));
+        this.add(createStyledLabel("Descrizione:"));
         this.add(descrizioneField);
-        this.add(new JLabel("Peso:"));
+        this.add(createStyledLabel("Peso:"));
         this.add(pesoField);
-        this.add(new JLabel("Circonferenza Punto Vita:"));
+        this.add(createStyledLabel("Circonferenza Punto Vita:"));
         this.add(circPuntoVitaField);
-        this.add(new JLabel("Circonferenza Braccio:"));
+        this.add(createStyledLabel("Circonferenza Braccio:"));
         this.add(circBraccioField);
-        this.add(new JLabel("Circonferenza Gambe:"));
+        this.add(createStyledLabel("Circonferenza Gambe:"));
         this.add(circGambeField);
         this.add(saveButton);
+    }
+
+    private JLabel createStyledLabel(String text) {
+        JLabel label = new JLabel(text);
+        label.setFont(Constants.appFont);
+        return label;
     }
 
     private class SaveButtonListener implements ActionListener {
