@@ -27,16 +27,19 @@ public class HomePageNut extends HomePage {
         setButtonAction(3, e -> {
             context = NutContext.MODIFY_PROFILE;
             System.out.println("Modifica profilo");
+            setCenterPanel(getPswPanel());
             setButtonsNames();
         });
         setButtonAction(4, e -> {
             context = NutContext.VIEW_CLIENT;
             System.out.println("Visualizza Clienti");
+            visualizeClientList();
             setButtonsNames();
         });
         setButtonAction(5, e -> {
             context = NutContext.HOME_PAGE;
             System.out.println("Visualizza Profilo");
+            addTable();
             setButtonsNames();
         });
     }

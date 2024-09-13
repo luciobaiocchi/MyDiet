@@ -25,7 +25,7 @@ public class TariffarioPanel extends JPanel {
         setLayout(new BorderLayout());
 
         // Create table model and set up table
-        tableModel = new DefaultTableModel(new Object[]{"Durata", "Prezzo"}, 0);
+        tableModel = new NonEditableTableModel(new Object[][]{}, new Object[]{"Durata", "Prezzo"});
         tariffTable = new JTable(tableModel);
 
         // Initialize components
@@ -38,6 +38,7 @@ public class TariffarioPanel extends JPanel {
         loadTariffe();
 
         // Set font for table
+        tariffTable.setRowHeight(40);
         tariffTable.setFont(Constants.appFont);
         tariffTable.getTableHeader().setFont(Constants.appFont);
 
@@ -103,10 +104,9 @@ public class TariffarioPanel extends JPanel {
             List<Tariffa> tariffe = nutrizionist.getTariffe();
             for (Tariffa tariffa : tariffe) {
                 tableModel.addRow(new Object[]{tariffa.getDurata(), tariffa.getPrezzo()});
-                durataComboBox.addItem(tariffa.getDurata());
             }
         } else {
-            System.out.println("Nutrizionist object is null");
+            JOptionPane.showMessageDialog(this, "Nessun nutrizionista loggato.", "Errore", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -138,6 +138,17 @@ public class TariffarioPanel extends JPanel {
             }
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Inserisci valori validi per durata e prezzo.", "Errore", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private static class NonEditableTableModel extends DefaultTableModel {
+        public NonEditableTableModel(Object[][] data, Object[] columnNames) {
+            super(data, columnNames);
+        }
+
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;
         }
     }
 }
