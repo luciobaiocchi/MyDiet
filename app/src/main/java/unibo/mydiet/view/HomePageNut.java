@@ -91,6 +91,7 @@ public class HomePageNut extends HomePage {
                 showPsw();
             }else if (context == NutContext.VIEW_CLIENT) {
                 System.out.println("Modifica Dieta");
+                createModifyDietPanel();
             }else if (context == NutContext.MODIFY_PROFILE){
                 System.out.println("Aggiungi Percorso");
                 addPercorsoFormazionePanel();
@@ -151,6 +152,13 @@ public class HomePageNut extends HomePage {
         JPanel searchPanel = new GoalViewPanel(controller);
         setCenterPanel(searchPanel);
     }
+
+    private void createModifyDietPanel() {
+        JPanel searchPanel = new ModifyDietPanel(controller);
+        setCenterPanel(searchPanel);
+    }
+
+
     @Override
     public void addTable() {
         if (controller.getUserLogged().isPresent() && controller.getUserLogged().get().getType() == UserType.NUTRIZIONIST) {

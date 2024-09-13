@@ -46,4 +46,8 @@ public class Ricetta {
     public String getTempoPreparazione() {
         return tempoPreparazione;
     }
+
+    public void addIngrediente(Alimento alimento) {
+        ingredienti.add(alimento);
+    }
 }

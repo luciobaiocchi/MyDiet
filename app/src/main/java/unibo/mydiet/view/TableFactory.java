@@ -2,6 +2,8 @@ package unibo.mydiet.view;
 
 import unibo.mydiet.model.Aggiornamento;
 import unibo.mydiet.model.Goal;
+import unibo.mydiet.model.diet.Alimento;
+import unibo.mydiet.model.diet.Ricetta;
 import unibo.mydiet.model.users.Client;
 import unibo.mydiet.model.users.Nutrizionist;
 import unibo.mydiet.model.users.PercorsoFormazione;
@@ -173,6 +175,38 @@ public class TableFactory {
         return table;
     }
 
+    public static JTable buildRecipeTable(final Ricetta ricetta) {
+        final String[][] data = {
+                {"Nome Ricetta", " " + ricetta.getNome()},
+                {"Difficoltà", " " + ricetta.getDifficolta()},
+                {"Tempo Preparazione", " " + ricetta.getTempoPreparazione()},
+        };
+        JTable table = new JTable(data, new String[]{" ", " "});
+        loadTable(table, 20, DEFAULT_FONT_SIZE);
+        return table;
+    }
+
+
+    public static JTable buildFoodTable(final List<Alimento> alimenti) {
+        String[] columnNames = {"Nome", "Quantità", "Proteine (g)", "Grassi (g)", "Carboidrati (g)", "Totale Calorie (kcal)"};
+        String[][] data = new String[alimenti.size()][6];
+
+        for (int i = 0; i < alimenti.size(); i++) {
+    Alimento alimento = alimenti.get(i);
+    data[i][0] = alimento.getNome();
+    data[i][1] = String.valueOf(alimento.getPeso());
+    data[i][2] = String.valueOf(alimento.getValoriNutrizionali().proteine());
+    data[i][3] = String.valueOf(alimento.getValoriNutrizionali().grassi());
+    data[i][4] = String.valueOf(alimento.getValoriNutrizionali().carboidrati());
+    data[i][5] = String.valueOf(alimento.getValoriNutrizionali().calorieTotali());
+}
+
+        JTable table = new JTable(data, columnNames);
+        loadTable(table, 20, DEFAULT_FONT_SIZE);
+        return table;
+    }
+
+
     private static void loadTable(JTable table, final int rowHeight, final float fontSize) {
         JTableHeader header = table.getTableHeader();
         header.setFont(Constants.appFont.deriveFont(fontSize));
@@ -190,6 +224,11 @@ public class TableFactory {
         for (int columnIndex = 0; columnIndex < table.getColumnCount(); columnIndex++) {
             column = table.getColumnModel().getColumn(columnIndex);
             int width = 15; // Min width
+            // Include header width
+            TableCellRenderer headerRenderer = table.getTableHeader().getDefaultRenderer();
+            Component headerComp = headerRenderer.getTableCellRendererComponent(table, column.getHeaderValue(), false, false, 0, columnIndex);
+            width = Math.max(headerComp.getPreferredSize().width + 1, width);
+            // Include cell width
             for (int row = 0; row < table.getRowCount(); row++) {
                 TableCellRenderer renderer = table.getCellRenderer(row, columnIndex);
                 Component comp = table.prepareRenderer(renderer, row, columnIndex);

@@ -4,7 +4,7 @@ import unibo.mydiet.DB.MyDietDAO;
 import unibo.mydiet.model.Aggiornamento;
 import unibo.mydiet.model.DietBuilder;
 import unibo.mydiet.model.Goal;
-import unibo.mydiet.model.diet.Dieta;
+import unibo.mydiet.model.diet.*;
 import unibo.mydiet.model.users.*;
 
 import java.sql.SQLException;
@@ -194,4 +194,11 @@ public class Controller {
         }
     }
 
+    public void updateRicetta(String clientUsername, NomeGiorno giorno, NomePasto pasto, Ricetta ricetta) {
+        dao.updateRicetta(clientUsername, giorno, pasto, ricetta);
+    }
+
+    public Alimento getAlimentoById(int id) {
+        return dao.getAlimentoById(id);
+    }
 }

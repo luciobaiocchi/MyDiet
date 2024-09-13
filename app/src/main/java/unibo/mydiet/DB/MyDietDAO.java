@@ -2,10 +2,7 @@ package unibo.mydiet.DB;
 
 import unibo.mydiet.model.Aggiornamento;
 import unibo.mydiet.model.Goal;
-import unibo.mydiet.model.diet.Alimento;
-import unibo.mydiet.model.diet.Dieta;
-import unibo.mydiet.model.diet.Ricetta;
-import unibo.mydiet.model.diet.ValoriNutrizionali;
+import unibo.mydiet.model.diet.*;
 import unibo.mydiet.model.users.Client;
 import unibo.mydiet.model.users.Nutrizionist;
 import unibo.mydiet.model.users.PercorsoFormazione;
@@ -537,6 +534,12 @@ public class MyDietDAO implements AutoCloseable {
         );
     }
 
+    public void updateRicetta(String clientUsername, NomeGiorno giorno, NomePasto pasto, Ricetta ricetta) {
+    }
+
+    public Alimento getAlimentoById(int id) {
+        return null;
+    }
 }
 
 

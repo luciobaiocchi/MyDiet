@@ -65,8 +65,8 @@ public class DietPanel extends JPanel {
     }
 
     private void displayRecipeData(final Ricetta ricetta) {
-        JTable recipeTable = buildRecipeTable(ricetta);
-        JTable foodTable = buildFoodTable(ricetta.getIngredienti());
+        JTable recipeTable = TableFactory.buildRecipeTable(ricetta);
+        JTable foodTable = TableFactory.buildFoodTable(ricetta.getIngredienti());
         JPanel pnl1 = new JPanel();
         JPanel pnl2 = new JPanel();
         JLabel txtLabel = new JLabel("Descrizione :\n" + ricetta.getProcedimento());
@@ -91,35 +91,8 @@ public class DietPanel extends JPanel {
         tablePanel.repaint();
     }
 
-    private JTable buildRecipeTable(final Ricetta ricetta) {
-        final String[][] data = {
-                {"Nome Ricetta", " " + ricetta.getNome()},
-                {"Difficoltà", " " + ricetta.getDifficolta()},
-                {"Tempo Preparazione", " " + ricetta.getTempoPreparazione()},
-        };
-        JTable table = new JTable(data, new String[]{" ", " "});
-        loadTable(table, 20, fontSize);
-        return table;
-    }
 
-    private JTable buildFoodTable(final List<Alimento> alimenti) {
-        String[] columnNames = {"Nome", "Quantità", "Proteine (g)", "Grassi (g)", "Carboidrati (g)", "Totale Calorie (kcal)"};
-        String[][] data = new String[alimenti.size()][6];
 
-        for (int i = 0; i < alimenti.size(); i++) {
-            Alimento alimento = alimenti.get(i);
-            data[i][0] = alimento.nome();
-            data[i][1] = String.valueOf(alimento.peso());
-            data[i][2] = String.valueOf(alimento.valoriNutrizionali().proteine());
-            data[i][3] = String.valueOf(alimento.valoriNutrizionali().grassi());
-            data[i][4] = String.valueOf(alimento.valoriNutrizionali().carboidrati());
-            data[i][5] = String.valueOf(alimento.valoriNutrizionali().calorieTotali());
-        }
-
-        JTable table = new JTable(data, columnNames);
-        loadTable(table, 20, fontSize);
-        return table;
-    }
 
     private static void loadTable(JTable table, final int rowHeight, final float fontSize) {
         JTableHeader header = table.getTableHeader();
