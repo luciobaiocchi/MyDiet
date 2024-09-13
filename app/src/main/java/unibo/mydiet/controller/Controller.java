@@ -1,6 +1,7 @@
 package unibo.mydiet.controller;
 
 import unibo.mydiet.DB.MyDietDAO;
+import unibo.mydiet.model.Aggiornamento;
 import unibo.mydiet.model.DietBuilder;
 import unibo.mydiet.model.Goal;
 import unibo.mydiet.model.diet.Dieta;
@@ -122,9 +123,16 @@ public class Controller {
         }
     }
 
-    public Goal getCLientGoal(){
+    public Goal getCLientGoal(final String username){
         try {
-            return dao.getCliGoal(userLogged.getCli().username());
+            return dao.getCliGoal(username);
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+    public List<Aggiornamento> getCLientAggiornamento(final String username){
+        try {
+            return dao.getUserAggiornamento(username);
         } catch (SQLException e) {
             return null;
         }

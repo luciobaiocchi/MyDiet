@@ -68,7 +68,7 @@ public class HomePageCli extends HomePage{
         super.addTable(TableFactory.getNutListMostSatisied(controller.getMoreSatisfiedlist()));
     }
     private void addGoal(){
-        addTable(TableFactory.getGoalTable(controller.getCLientGoal()));
+        addTable(TableFactory.getGoalTable(controller.getCLientGoal(controller.getUserLogged().get().getCli().username())));
     }
     private void showPsw(){
         addTable(TableFactory.getPswTable(controller.getUsrPsw()));

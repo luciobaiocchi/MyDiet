@@ -191,7 +191,7 @@ create table AGGIORNAMENTO (
                                Peso int not null,
                                Circ_punto_vita int not null,
                                Circ_braccio int not null,
-                               Cir_gambe int not null,
+                               Circ_gambe int not null,
                                constraint ID_AGGIORNAMENTO_ID primary key (Username, Data),
                                foreign key (Username) references CLIENTE (Username)
 );

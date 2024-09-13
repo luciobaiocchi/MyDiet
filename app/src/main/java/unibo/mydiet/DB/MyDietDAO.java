@@ -1,5 +1,6 @@
 package unibo.mydiet.DB;
 
+import unibo.mydiet.model.Aggiornamento;
 import unibo.mydiet.model.Goal;
 import unibo.mydiet.model.diet.Alimento;
 import unibo.mydiet.model.diet.Dieta;
@@ -493,6 +494,34 @@ public class MyDietDAO implements AutoCloseable {
         }
         return clientUsernames;
     }
+
+
+
+    public List<Aggiornamento> getUserAggiornamento(String username) throws SQLException {
+        final String query = "SELECT * FROM MyDiet.AGGIORNAMENTO WHERE Username = ?";
+        List<Aggiornamento> aggiornamenti = new ArrayList<>();
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, username);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Aggiornamento aggiornamento = new Aggiornamento(
+                            rs.getString("Data"),
+                            rs.getString("Descrizione"),
+                            rs.getString("Peso"),
+                            rs.getString("Circ_punto_vita"),
+                            rs.getString("Circ_braccio"),
+                            rs.getString("Circ_gambe")
+                    );
+                    aggiornamenti.add(aggiornamento);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+        return aggiornamenti;
+    }
+
     private Nutrizionist buildNutrizionist(ResultSet rs) throws SQLException {
         return new Nutrizionist(
                 rs.getString("Specializzazione"),

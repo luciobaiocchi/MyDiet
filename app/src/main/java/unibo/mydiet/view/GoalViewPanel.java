@@ -1,6 +1,8 @@
 package unibo.mydiet.view;
 
 import unibo.mydiet.controller.Controller;
+import unibo.mydiet.model.Goal;
+import unibo.mydiet.model.Aggiornamento;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,6 +14,7 @@ public class GoalViewPanel extends JPanel {
     private final Controller controller;
     private final JTextField searchField;
     private final JButton searchButton;
+    private final JComboBox<String> viewOptions;
     private final JPanel resultPanel;
 
     public GoalViewPanel(Controller controller) {
@@ -23,9 +26,11 @@ public class GoalViewPanel extends JPanel {
         JLabel searchLabel = new JLabel("Inserisci Username Cliente:");
         searchField = new JTextField(20);
         searchButton = new JButton("Cerca");
+        viewOptions = new JComboBox<>(new String[]{"Visualizza Obiettivo", "Visualizza Aggiornamenti"});
 
         searchPanel.add(searchLabel);
         searchPanel.add(searchField);
+        searchPanel.add(viewOptions);
         searchPanel.add(searchButton);
 
         // Create result panel
@@ -39,12 +44,48 @@ public class GoalViewPanel extends JPanel {
         searchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                searchClient();
+                String selectedOption = (String) viewOptions.getSelectedItem();
+                String client = searchField.getText();
+                if ("Visualizza Obiettivo".equals(selectedOption)) {
+                    getClientGoal(client);
+                } else if ("Visualizza Aggiornamenti".equals(selectedOption)) {
+                    getClientAggiornamenti(client);
+                }
             }
         });
     }
 
-    private void searchClient() {
-        String username = searchField.getText();
+    private void getClientGoal(final String client) {
+        if (controller.getClientUsernames().contains(client)) {
+            Goal goal = controller.getCLientGoal(client);
+            if (goal != null) {
+                JTable goalTable = TableFactory.getGoalTable(goal);
+                resultPanel.removeAll();
+                resultPanel.add(new JScrollPane(goalTable), BorderLayout.CENTER);
+                resultPanel.revalidate();
+                resultPanel.repaint();
+            } else {
+                JOptionPane.showMessageDialog(this, "Nessun obiettivo trovato per questo cliente.");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Cliente non trovato.");
+        }
     }
+
+    private void getClientAggiornamenti(final String client) {
+        if (controller.getClientUsernames().contains(client)) {
+            List<Aggiornamento> aggiornamenti = controller.getCLientAggiornamento(client);
+            if (aggiornamenti != null && !aggiornamenti.isEmpty()) {
+                JTable aggiornamentiTable = TableFactory.getAggiornamentiTable(aggiornamenti);
+                resultPanel.removeAll();
+                resultPanel.add(new JScrollPane(aggiornamentiTable), BorderLayout.CENTER);
+                resultPanel.revalidate();
+                resultPanel.repaint();
+            } else {
+                JOptionPane.showMessageDialog(this, "Nessun aggiornamento trovato per questo cliente.");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Cliente non trovato.");
+        }
+   }
 }

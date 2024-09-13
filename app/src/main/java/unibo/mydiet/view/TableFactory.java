@@ -2,15 +2,14 @@ package unibo.mydiet.view;
 
 
 
+import unibo.mydiet.model.Aggiornamento;
 import unibo.mydiet.model.Goal;
-import unibo.mydiet.model.diet.Dieta;
 import unibo.mydiet.model.users.Client;
 import unibo.mydiet.model.users.Nutrizionist;
 import unibo.mydiet.model.users.PercorsoFormazione;
 
 import javax.swing.*;
 import javax.swing.table.JTableHeader;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -132,6 +131,24 @@ public class TableFactory {
         table.setDragEnabled(true);
         loadTable(table, 40);
 
+        return table;
+    }
+
+
+    public static JTable getAggiornamentiTable(List<Aggiornamento> aggiornamenti) {
+        final String[][] data = new String[aggiornamenti.size()][6];
+        for (int i = 0; i < aggiornamenti.size(); i++) {
+            Aggiornamento agg = aggiornamenti.get(i);
+            data[i][0] = agg.data();
+            data[i][1] = agg.descrizione();
+            data[i][2] = agg.peso();
+            data[i][3] = agg.circPuntoVita();
+            data[i][4] = agg.circBraccio();
+            data[i][5] = agg.circGambe();
+        }
+        String[] columnNames = {"Data", "Descrizione", "Peso", "Circ. Punto Vita", "Circ. Braccio", "Circ. Gambe"};
+        JTable table = new JTable(data, columnNames);
+        loadTable(table, 40);
         return table;
     }
 
