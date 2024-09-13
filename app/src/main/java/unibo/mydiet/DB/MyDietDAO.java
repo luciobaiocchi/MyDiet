@@ -492,8 +492,6 @@ public class MyDietDAO implements AutoCloseable {
         return clientUsernames;
     }
 
-
-
     public List<Aggiornamento> getUserAggiornamento(String username) throws SQLException {
         final String query = "SELECT * FROM MyDiet.AGGIORNAMENTO WHERE Username = ?";
         List<Aggiornamento> aggiornamenti = new ArrayList<>();
@@ -534,10 +532,170 @@ public class MyDietDAO implements AutoCloseable {
         );
     }
 
-    public void updateRicetta(String clientUsername, NomeGiorno giorno, NomePasto pasto, Ricetta ricetta) {
+    public void updateRicetta(final String clientUsername, final NomeGiorno giorno, final NomePasto pasto, final Ricetta ricetta) {
+        removeCreazione(clientUsername, giorno.toString(), pasto.toString());
+        removeRicetta(clientUsername, giorno.toString(), pasto.toString());
+
+        final String insertRicettaQuery = """
+        INSERT INTO RICETTA (INC_COM_Username, INC_COM_Data_inizio, INC_COM_Nome, INC_Nome, Nome, Difficolta, Descrizione, Tempo_Preparazione)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+    """;
+
+        try (PreparedStatement stmtRicetta = connection.prepareStatement(insertRicettaQuery)) {
+            // Inserimento in RICETTA
+            stmtRicetta.setString(1, clientUsername);
+            stmtRicetta.setString(2, getDietStartDate(clientUsername)); // Data di esempio, sostituire con la data corretta
+            stmtRicetta.setString(3, giorno.toString());
+            stmtRicetta.setString(4, pasto.toString());
+            stmtRicetta.setString(5, ricetta.getNome());
+            stmtRicetta.setString(6, ricetta.getDifficolta());
+            stmtRicetta.setString(7, ricetta.getProcedimento());
+            stmtRicetta.setString(8, ricetta.getTempoPreparazione());
+            stmtRicetta.executeUpdate();
+            addAlimentiToCreazione(clientUsername, getDietStartDate(clientUsername), giorno.toString(), pasto.toString(), ricetta.getNome(), ricetta.getIngredienti());
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 
-    public Alimento getAlimentoById(int id) {
+    private void addAlimentiToCreazione(String username, String dataInizio, String giorno, String pasto, String nome, List<Alimento> alimenti) {
+    final String insertCreazioneQuery = """
+        INSERT INTO CREAZIONE (INC_COM_Username, INC_COM_Data_inizio, INC_COM_Nome, INC_Nome, Nome, IdAlimento, Peso)
+        VALUES (?, ?, ?, ?, ?, ?, ?);
+    """;
+
+    try (PreparedStatement stmt = connection.prepareStatement(insertCreazioneQuery)) {
+        for (Alimento alimento : alimenti) {
+            stmt.setString(1, username);
+            stmt.setString(2, dataInizio);
+            stmt.setString(3, giorno);
+            stmt.setString(4, pasto);
+            stmt.setString(5, nome);
+            stmt.setString(6, alimento.getIdAlimento());
+            stmt.setInt(7, alimento.getPeso());
+            stmt.addBatch();
+        }
+        stmt.executeBatch();
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+}
+
+
+    private void removeCreazione(String username, String giorno, String pasto) {
+        final String deleteQuery = """
+        DELETE FROM MyDiet.CREAZIONE 
+        WHERE INC_COM_Username = ? 
+        AND INC_COM_Nome = ? 
+        AND INC_Nome = ? 
+        AND INC_COM_Data_inizio = (
+            SELECT MAX(INC_COM_Data_inizio) 
+            FROM MyDiet.RICETTA 
+            WHERE INC_COM_Username = ?
+        );
+    """;
+
+        try (PreparedStatement stmt = connection.prepareStatement(deleteQuery)) {
+            stmt.setString(1, username);
+            stmt.setString(2, giorno);
+            stmt.setString(3, pasto);
+            stmt.setString(4, username);
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void removeRicetta(String username, String giorno, String pasto) {
+        final String deleteQuery = """
+            DELETE FROM MyDiet.RICETTA
+            WHERE INC_COM_Username = ?
+            AND INC_COM_Nome = ?
+            AND INC_Nome = ?
+            ORDER BY INC_COM_Data_inizio DESC;
+        """;
+
+        try (PreparedStatement stmt = connection.prepareStatement(deleteQuery)) {
+            stmt.setString(1, username);
+            stmt.setString(2, giorno);
+            stmt.setString(3, pasto);
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String getDietStartDate(final String clientUsername) {
+        final String query = """
+            SELECT Data_inizio FROM MyDiet.DIETA
+            WHERE Username = ?
+            ORDER BY Data_inizio desc
+            LIMIT 1;
+        """;
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, clientUsername);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("Data_inizio");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<Alimento> getAlimList() throws SQLException {
+        List<Alimento> alimenti = new ArrayList<>();
+        String query = "SELECT * FROM MyDiet.ALIMENTO";
+
+        try (PreparedStatement statement = connection.prepareStatement(query);
+             ResultSet resultSet = statement.executeQuery()) {
+
+            while (resultSet.next()) {
+                String idAlimento = resultSet.getString("IdAlimento");
+                String nome = resultSet.getString("Nome");
+                ValoriNutrizionali valoriNutrizionali = new ValoriNutrizionali(
+                        resultSet.getInt("Grammi_proteine"),
+                        resultSet.getInt("Grammi_grassi"),
+                        resultSet.getInt("Grammi_carboidrati"),
+                        resultSet.getInt("Calorie_totali")
+                );
+
+                Alimento alimento = new Alimento(idAlimento, 0, nome, valoriNutrizionali);
+                alimenti.add(alimento);
+            }
+        }
+
+    return alimenti;
+}
+
+    public Alimento getAlimentoById(String id) {
+        final String query = "SELECT * FROM MyDiet.ALIMENTO WHERE IdAlimento = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    String idAlimento = rs.getString("IdAlimento");
+                    String nome = rs.getString("Nome");
+                    ValoriNutrizionali valoriNutrizionali = new ValoriNutrizionali(
+                            rs.getInt("Grammi_proteine"),
+                            rs.getInt("Grammi_grassi"),
+                            rs.getInt("Grammi_carboidrati"),
+                            rs.getInt("Calorie_totali")
+                    );
+                    return new Alimento(idAlimento, 0, nome, valoriNutrizionali);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 }

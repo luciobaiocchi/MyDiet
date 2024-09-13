@@ -198,7 +198,15 @@ public class Controller {
         dao.updateRicetta(clientUsername, giorno, pasto, ricetta);
     }
 
-    public Alimento getAlimentoById(int id) {
+    public Alimento getAlimentoById(String id) {
         return dao.getAlimentoById(id);
+    }
+
+    public List<Alimento> getAlimenti() {
+        try {
+            return dao.getAlimList();
+        } catch (SQLException e) {
+            return Collections.emptyList();
+        }
     }
 }

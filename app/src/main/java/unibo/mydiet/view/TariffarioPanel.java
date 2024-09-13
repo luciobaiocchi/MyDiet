@@ -34,6 +34,9 @@ public class TariffarioPanel extends JPanel {
         saveButton = createButton("Salva");
         updateButton = createButton("Aggiorna");
 
+        // Load durations into the combo box
+        loadDurations();
+
         // Load tariffe
         loadTariffe();
 
@@ -96,6 +99,13 @@ public class TariffarioPanel extends JPanel {
         JComboBox<Integer> comboBox = new JComboBox<>();
         comboBox.setFont(Constants.appFont);
         return comboBox;
+    }
+
+    private void loadDurations() {
+        Integer[] durations = {1, 3, 6, 12}; // Example durations in months
+        for (Integer duration : durations) {
+            durataComboBox.addItem(duration);
+        }
     }
 
     private void loadTariffe() {

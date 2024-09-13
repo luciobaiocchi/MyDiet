@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Ricetta {
-    private List<Alimento> ingredienti = new ArrayList<>();
+    private List<Alimento> ingredienti;
     private String nome;
     private String difficolta;
     private String procedimento;

@@ -752,7 +752,7 @@ INSERT INTO INTEGRAZIONE (Username, Data_inizio, IdIntegratore) VALUES
     ('cliente4', '2024-10-01', 'INTG003');
 
 -- Inserimento nella tabella AGGIORNAMENTO
-INSERT INTO AGGIORNAMENTO (Username, Data, Descrizione, Peso, Circ_punto_vita, Circ_braccio, Cir_gambe) VALUES
+INSERT INTO AGGIORNAMENTO (Username, Data, Descrizione, Peso, Circ_punto_vita, Circ_braccio, Circ_gambe) VALUES
     ('cliente4', '2024-08-15', 'Controllo mensile', 68, 82, 29, 53),
     ('cliente4', '2024-09-15', 'Controllo mensile', 67, 81, 28, 52),
     ('cliente5', '2024-08-20', 'Controllo settimanale', 72, 88, 30, 57),
