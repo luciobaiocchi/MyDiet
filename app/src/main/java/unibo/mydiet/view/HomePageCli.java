@@ -1,10 +1,13 @@
 package unibo.mydiet.view;
 
 import unibo.mydiet.controller.Controller;
+import unibo.mydiet.model.diet.Dieta;
 import unibo.mydiet.model.users.Client;
+import unibo.mydiet.model.users.Nutrizionist;
 import unibo.mydiet.model.users.UserType;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionListener;
 
 public class HomePageCli extends HomePage{
@@ -116,8 +119,77 @@ public class HomePageCli extends HomePage{
 
     private void addNutList() {
         System.out.println("addNutList");
-        addTable(TableFactory.getNutList(controller.getNutrizionists()));
+        JTable table = TableFactory.getNutList(controller.getNutrizionists());
+        table.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                if (evt.getClickCount() == 2) {
+                    int row = table.getSelectedRow();
+                    if (row != -1) {
+                        String nutUsername = table.getValueAt(row, 0).toString(); // Assuming the username is in the first column
+                        System.out.println("Selected nutritionist:" + nutUsername);
+                        showNutProfile(nutUsername);
+                    }
+                }
+            }
+        });
+        addTable(table);
     }
+
+
+
+
+    private void showNutProfile(String username) {
+        // Retrieve the nutritionist details from the controller
+        Nutrizionist nutritionist = controller.getNutrizionist(username);
+        if (nutritionist != null) {
+            // Create a panel to hold the profile table, tariff table, and action panel
+            JPanel profilePanel = new JPanel();
+            profilePanel.setLayout(new BorderLayout());
+
+            // Display the nutritionist profile
+            JTable nutTable = TableFactory.getNutProfileNopsw(nutritionist);
+            profilePanel.add(new JScrollPane(nutTable), BorderLayout.NORTH);
+
+            // Add tariff table
+            JTable tariffTable = TableFactory.getTariffTable(nutritionist);
+            JScrollPane tariffScrollPane = new JScrollPane(tariffTable);
+            tariffScrollPane.setPreferredSize(tariffTable.getPreferredSize());
+            profilePanel.add(tariffScrollPane, BorderLayout.CENTER);
+
+            // Add duration selection and start path button
+            JPanel actionPanel = new JPanel();
+            JLabel durationLabel = new JLabel("Durata (mesi):");
+            JComboBox<Integer> durationComboBox = new JComboBox<>(new Integer[]{1, 3, 6, 12});
+            JButton startPathButton = new JButton("Inizia Percorso");
+
+            actionPanel.add(durationLabel);
+            actionPanel.add(durationComboBox);
+            actionPanel.add(startPathButton);
+
+            profilePanel.add(actionPanel, BorderLayout.SOUTH);
+
+            // Check if the client is already a client of the nutritionist
+            Client client = controller.getUserLogged().get().getCli();
+            boolean isClientOfNutritionist = controller.isClientOfNutritionist(client.username(), username);
+
+            if (isClientOfNutritionist) {
+                // Add review panel
+                ReviewPanel reviewPanel = new ReviewPanel(controller, username);
+                profilePanel.add(reviewPanel, BorderLayout.NORTH);
+            }
+
+            // Set the profile panel as the center panel
+            setCenterPanel(profilePanel);
+            profilePanel.revalidate();
+            profilePanel.repaint();
+        } else {
+            JOptionPane.showMessageDialog(null, "Nutrizionista non trovato");
+        }
+    }
+
+
+
     private void addNutHigerRating() {
         System.out.println("addNutHigerRating");
         addTable(TableFactory.getNutList(controller.getHigerratingList()));
@@ -132,11 +204,16 @@ public class HomePageCli extends HomePage{
     private void showPsw(){
         addTable(TableFactory.getPswTable(controller.getUsrPsw()));
     }
-    private void addDiet(){
-        DietPanel dietPanel = new DietPanel(controller.getDiet());
-        setCenterPanel(dietPanel);
-        dietPanel.revalidate(); // Ensure the layout manager recalculates the layout
-        dietPanel.repaint();
+    private void addDiet() {
+        Dieta diet = controller.getDiet();
+        if (diet != null) {
+            DietPanel dietPanel = new DietPanel(diet);
+            setCenterPanel(dietPanel);
+            dietPanel.revalidate(); // Ensure the layout manager recalculates the layout
+            dietPanel.repaint();
+        } else {
+            JOptionPane.showMessageDialog(null, "Dieta non trovata");
+        }
     }
     private void addClientUpdates() {
         System.out.println("Visualizza Aggiornamenti");

@@ -1,5 +1,5 @@
 package unibo.mydiet.view;
-
+import unibo.mydiet.model.users.Tariffa;
 import unibo.mydiet.model.Aggiornamento;
 import unibo.mydiet.model.Goal;
 import unibo.mydiet.model.diet.Alimento;
@@ -21,6 +21,7 @@ public class TableFactory {
 
     private static final float DEFAULT_FONT_SIZE = 15f;
 
+
     private static class NonEditableTableModel extends DefaultTableModel {
         public NonEditableTableModel(Object[][] data, Object[] columnNames) {
             super(data, columnNames);
@@ -32,6 +33,21 @@ public class TableFactory {
         }
     }
 
+    public static JTable getTariffTable(Nutrizionist nutritionist) {
+        String[] columnNames = {"Durata (mesi)", "Prezzo (€)"};
+        DefaultTableModel tableModel = new NonEditableTableModel(new Object[0][0], columnNames);
+
+        // Load tariffs from the nutritionist
+        List<Tariffa> tariffe = nutritionist.getTariffe();
+        for (Tariffa tariffa : tariffe) {
+            Object[] row = {tariffa.getDurata(), tariffa.getPrezzo()};
+            tableModel.addRow(row);
+        }
+
+        JTable table = new JTable(tableModel);
+        loadTable(table, 40, DEFAULT_FONT_SIZE);
+        return table;
+    }
     public static JTable getNutProfile(final Nutrizionist nutrizionist) {
         final String[][] data = {
                 {" ", "Specializzazione", nutrizionist.getSpecializzazione(), " "},
@@ -42,6 +58,24 @@ public class TableFactory {
                 {" ", "mail", nutrizionist.getMail(), " "},
                 {" ", "sesso", nutrizionist.getSesso(), " "},
                 {" ", "password", nutrizionist.getPassword(), " "},
+                {" ", "media Stelle", nutrizionist.getMediaStelle(), " "},
+                {" ", "Clienti a obbiettivo", nutrizionist.getPercentualeSoddisfatti() + "%", " "},
+        };
+        JTable table = new JTable(new NonEditableTableModel(data, new String[]{"", "", "", ""}));
+        loadTable(table, 60, DEFAULT_FONT_SIZE);
+        resizeColumnWidth(table);
+        return table;
+    }
+
+    public static JTable getNutProfileNopsw(final Nutrizionist nutrizionist) {
+        final String[][] data = {
+                {" ", "Specializzazione", nutrizionist.getSpecializzazione(), " "},
+                {" ", "nome", nutrizionist.getNome(), " "},
+                {" ", "cognome", nutrizionist.getCognome(), " "},
+                {" ", "CliUsername", nutrizionist.getUsername(), " "},
+                {" ", "numeroTelefono", nutrizionist.getNumeroTelefono(), " "},
+                {" ", "mail", nutrizionist.getMail(), " "},
+                {" ", "sesso", nutrizionist.getSesso(), " "},
                 {" ", "media Stelle", nutrizionist.getMediaStelle(), " "},
                 {" ", "Clienti a obbiettivo", nutrizionist.getPercentualeSoddisfatti() + "%", " "},
         };
@@ -69,20 +103,21 @@ public class TableFactory {
     }
 
     public static JTable getNutList(final List<Nutrizionist> nutrizionists) {
-        final String[][] data = new String[nutrizionists.size()][4];
-        for (int i = 0; i < nutrizionists.size(); i++) {
-            data[i][0] = " " + nutrizionists.get(i).getNome();
-            data[i][1] = " " + nutrizionists.get(i).getCognome();
-            data[i][2] = " " + nutrizionists.get(i).getSpecializzazione();
-            data[i][3] = " " + nutrizionists.get(i).getMediaStelle();
-        }
-        String[] columns = {"Nome", "Cognome", "Specializzazione", "Media Stelle"};
-        JTable table = new JTable(new NonEditableTableModel(data, columns));
-        table.setDragEnabled(true);
-        loadTable(table, 40, DEFAULT_FONT_SIZE);
-        resizeColumnWidth(table);
-        return table;
+    final String[][] data = new String[nutrizionists.size()][5];
+    for (int i = 0; i < nutrizionists.size(); i++) {
+        data[i][0] = nutrizionists.get(i).getUsername();
+        data[i][1] = " " + nutrizionists.get(i).getNome();
+        data[i][2] = " " + nutrizionists.get(i).getCognome();
+        data[i][3] = " " + nutrizionists.get(i).getSpecializzazione();
+        data[i][4] = " " + nutrizionists.get(i).getMediaStelle();
     }
+    String[] columns = {"Username", "Nome", "Cognome", "Specializzazione", "Media Stelle"};
+    JTable table = new JTable(new NonEditableTableModel(data, columns));
+    table.setDragEnabled(true);
+    loadTable(table, 40, DEFAULT_FONT_SIZE);
+    resizeColumnWidth(table);
+    return table;
+}
 
     public static JTable getNutListMostSatisied(final List<Nutrizionist> nutrizionists) {
         final String[][] data = new String[nutrizionists.size()][4];
@@ -205,7 +240,6 @@ public class TableFactory {
         loadTable(table, 20, DEFAULT_FONT_SIZE);
         return table;
     }
-
 
     private static void loadTable(JTable table, final int rowHeight, final float fontSize) {
         JTableHeader header = table.getTableHeader();

@@ -12,6 +12,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 public class MyDietDAO implements AutoCloseable {
     private final Connection connection;
@@ -42,7 +43,7 @@ public class MyDietDAO implements AutoCloseable {
                                     final String cognome,
                                     final String username,
                                     final String password,
-                                    final int numeroTelefono,
+                                    final String numeroTelefono,
                                     final int eta,
                                     final String mail,
                                     final char sesso){
@@ -715,6 +716,41 @@ public class MyDietDAO implements AutoCloseable {
         stmt.setInt(7, circGambe);
         stmt.executeUpdate();
         return true;
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
+    }
+}
+
+    public boolean saveReview(String clientUsername, String nutritionistUsername, Optional<String> description, int stars) {
+    final String getLastIdQuery = "SELECT Id_recensione FROM MyDiet.RECENSIONE ORDER BY Id_recensione DESC LIMIT 1";
+    final String insertReviewQuery = """
+        INSERT INTO RECENSIONE (Id_recensione, Username, R_C_Username, Testo, Data_recensione, Numero_stelle)
+        VALUES (?, ?, ?, ?, CURRENT_DATE, ?);
+    """;
+
+    try (PreparedStatement getLastIdStmt = connection.prepareStatement(getLastIdQuery);
+         ResultSet rs = getLastIdStmt.executeQuery()) {
+
+        int newId;
+        if (rs.next()) {
+            String lastId = rs.getString("Id_recensione");
+            newId = Integer.parseInt(lastId) + 1;
+        } else {
+            newId = 1;
+        }
+
+        String formattedId = String.format("%05d", newId);
+
+        try (PreparedStatement insertReviewStmt = connection.prepareStatement(insertReviewQuery)) {
+            insertReviewStmt.setString(1, formattedId);
+            insertReviewStmt.setString(2, nutritionistUsername);
+            insertReviewStmt.setString(3, clientUsername);
+            insertReviewStmt.setString(4, description.orElse(null));
+            insertReviewStmt.setInt(5, stars);
+            insertReviewStmt.executeUpdate();
+            return true;
+        }
     } catch (SQLException e) {
         e.printStackTrace();
         return false;

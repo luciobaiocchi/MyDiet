@@ -14,7 +14,7 @@ create table INTEGRATORI (
 -- NUTRIZIONISTA table
 create table NUTRIZIONISTA (
                                Specializzazione varchar(255) not null,
-                               Numero_di_telefono int not null,
+                               Numero_di_telefono varchar(255) not null,
                                Mail varchar(255) not null,
                                Username varchar(255) not null,
                                Nome_ varchar(255) not null,
@@ -28,7 +28,7 @@ create table NUTRIZIONISTA (
 
 -- CLIENTE table
 create table CLIENTE (
-                         Numero_di_telefono int,
+                         Numero_di_telefono varchar(255),
                          Mail varchar(255),
                          Eta int not null,
                          Username varchar(255) not null,
@@ -289,6 +289,54 @@ create unique index ID_ALIMENTO_IND
 create unique index ID_INTEGRATORI_IND
     on INTEGRATORI (IdIntegratore);
 
+DELIMITER $$
+
+CREATE TRIGGER check_7_days
+BEFORE INSERT ON GIORNO
+FOR EACH ROW
+BEGIN
+    DECLARE num_days INT;
+
+    -- Conta quanti giorni sono già presenti per la dieta
+    SELECT COUNT(*) INTO num_days
+    FROM GIORNO
+    WHERE Username = NEW.Username
+    AND Data_inizio = NEW.Data_inizio;
+
+    -- Se ci sono già 7 giorni, solleva un'eccezione e impedisce l'inserimento
+    IF num_days >= 7 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'La dieta non può avere più di 7 giorni.';
+    END IF;
+END$$
+
+DELIMITER ;
+
+DELIMITER $$
+
+CREATE TRIGGER check_3_meals
+BEFORE INSERT ON PASTO
+FOR EACH ROW
+BEGIN
+    DECLARE num_meals INT;
+
+    -- Conta quanti pasti sono già presenti per il giorno specifico
+    SELECT COUNT(*) INTO num_meals
+    FROM PASTO
+    WHERE COM_Username = NEW.COM_Username
+    AND COM_Data_inizio = NEW.COM_Data_inizio
+    AND COM_Nome = NEW.COM_Nome;
+
+    -- Se ci sono già 3 pasti, solleva un'eccezione e impedisce l'inserimento
+    IF num_meals >= 3 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Il giorno non può avere più di 3 pasti.';
+    END IF;
+END$$
+
+DELIMITER ;
+
+
 
 
 -- TARIFFA index
@@ -525,13 +573,13 @@ INSERT INTO INTEGRATORI (IdIntegratore, Nome, Scopo) VALUES
 -- Inserimento dati di esempio per RECENSIONE
 INSERT INTO RECENSIONE (Id_recensione, Username, R_C_Username, Testo, Data_recensione, Numero_stelle)
 VALUES
-	('rec1', 'nutrizionista4', 'cliente4', 'Ottimo servizio!', '2024-08-21', 5),
-    ('rec2', 'nutrizionista4', 'cliente5', 'Molto soddisfatto.', '2024-08-22', 4),
-    ('rec3', 'nutrizionista5', 'cliente6', 'Consigliato!', '2024-08-23', 5),
-    ('rec4', 'nutrizionista5', 'cliente7', 'Non male, ma migliorabile.', '2024-08-24', 3),
-    ('rec5', 'nutrizionista4', 'cliente6', 'Un altro ottimo feedback!', '2024-08-25', 5),
-    ('rec6', 'nutrizionista4', 'cliente6', 'Buona esperienza, ma potrebbe migliorare.', '2024-08-23', 4),
-    ('rec7', 'nutrizionista4', 'cliente5', 'Servizio eccellente!', '2024-08-22', 5);
+	('0001', 'nutrizionista4', 'cliente4', 'Ottimo servizio!', '2024-08-21', 5),
+    ('00002', 'nutrizionista4', 'cliente5', 'Molto soddisfatto.', '2024-08-22', 4),
+    ('00003', 'nutrizionista5', 'cliente6', 'Consigliato!', '2024-08-23', 5),
+    ('00004', 'nutrizionista5', 'cliente7', 'Non male, ma migliorabile.', '2024-08-24', 3),
+    ('00005', 'nutrizionista4', 'cliente6', 'Un altro ottimo feedback!', '2024-08-25', 5),
+    ('00006', 'nutrizionista4', 'cliente6', 'Buona esperienza, ma potrebbe migliorare.', '2024-08-23', 4),
+    ('00007', 'nutrizionista4', 'cliente5', 'Servizio eccellente!', '2024-08-22', 5);
 
 -- Inserisci dati nella tabella DIETA
 INSERT INTO DIETA (Username, Prezzo, Data_fine, Data_inizio, SVI_Username)

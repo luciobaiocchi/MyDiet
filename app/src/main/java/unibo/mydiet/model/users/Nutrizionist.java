@@ -22,7 +22,7 @@ public class Nutrizionist implements User {
 
     public Nutrizionist(String specializzazione, String nome, String cognome, String username, String password, String numeroTelefono, String mail, String sesso, String percentualeSoddisfatti, String mediaStelle) {
         if (specializzazione == null || specializzazione.isBlank()) {
-            throw new IllegalArgumentException("Specializzazione cannot be null or empty");
+            throw new IllegalArgumentException("Nome cannot be null or empty");
         }
         if (nome == null || nome.isBlank()) {
             throw new IllegalArgumentException("Nome cannot be null or empty");

@@ -49,6 +49,159 @@ public class LoginPanel extends JPanel implements PanelChangeSubject{
 
     }
 
+    // Metodo per creare il pannello di Registrazione
+
+    private JPanel createRegisterPanel() {
+        JPanel panel = new JPanel(new GridBagLayout());
+        panel.setBackground(Constants.BG_COLOR);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+
+        // Campi di testo per la registrazione
+        JTextField nomeField = new JTextField(15);
+        JTextField cognomeField = new JTextField(15);
+        JTextField newUsernameField = new JTextField(15);
+        JPasswordField newPasswordField = new JPasswordField(15);
+        JTextField numeroTelefonoField = new JTextField(15);
+        JTextField etaField = new JTextField(15);
+        JTextField mailField = new JTextField(15);
+        JTextField specializzazioneField = new JTextField(15);
+        specializzazioneField.setVisible(false); // Initially hidden
+        JButton registerButton = createStyledButton("Register");
+        JButton backButton = createStyledButton("Back to Login");
+
+        // ComboBox per selezionare il tipo di utente
+        String[] userTypes = {"Cliente", "Nutrizionista"};
+        JComboBox<String> userTypeComboBox = new JComboBox<>(userTypes);
+
+        // ComboBox per selezionare il sesso
+        String[] genderOptions = {"Maschio", "Femmina"};
+        JComboBox<String> genderComboBox = new JComboBox<>(genderOptions);
+
+        styleTextField(nomeField);
+        styleTextField(cognomeField);
+        styleTextField(newUsernameField);
+        styleTextField(newPasswordField);
+        styleTextField(numeroTelefonoField);
+        styleTextField(etaField);
+        styleTextField(mailField);
+        styleTextField(specializzazioneField);
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        panel.add(createStyledLabel("Nome:"), gbc);
+        gbc.gridx = 1;
+        panel.add(nomeField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        panel.add(createStyledLabel("Cognome:"), gbc);
+        gbc.gridx = 1;
+        panel.add(cognomeField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        panel.add(createStyledLabel("Username:"), gbc);
+        gbc.gridx = 1;
+        panel.add(newUsernameField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        panel.add(createStyledLabel("Password:"), gbc);
+        gbc.gridx = 1;
+        panel.add(newPasswordField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        panel.add(createStyledLabel("Numero Telefono:"), gbc);
+        gbc.gridx = 1;
+        panel.add(numeroTelefonoField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        panel.add(createStyledLabel("Età:"), gbc);
+        gbc.gridx = 1;
+        panel.add(etaField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 6;
+        panel.add(createStyledLabel("Mail:"), gbc);
+        gbc.gridx = 1;
+        panel.add(mailField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 7;
+        panel.add(createStyledLabel("Sesso:"), gbc);
+        gbc.gridx = 1;
+        panel.add(genderComboBox, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 8;
+        panel.add(createStyledLabel("Tipo di Utente:"), gbc);
+        gbc.gridx = 1;
+        panel.add(userTypeComboBox, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 9;
+        panel.add(createStyledLabel("Specializzazione:"), gbc);
+        gbc.gridx = 1;
+        panel.add(specializzazioneField, gbc);
+
+        userTypeComboBox.addItemListener(e -> {
+            if ("Nutrizionista".equals(e.getItem())) {
+                specializzazioneField.setVisible(true);
+            } else {
+                specializzazioneField.setVisible(false);
+            }
+            panel.revalidate();
+            panel.repaint();
+        });
+
+        registerButton.addActionListener(e -> {
+            String nome = nomeField.getText();
+            String cognome = cognomeField.getText();
+            String username = newUsernameField.getText();
+            String password = String.copyValueOf(newPasswordField.getPassword());
+            String numeroTelefono = numeroTelefonoField.getText();
+            int eta = Integer.parseInt(etaField.getText());
+            String mail = mailField.getText();
+            String sesso = (String) genderComboBox.getSelectedItem();
+            String userType = (String) userTypeComboBox.getSelectedItem();
+            String specializzazione = specializzazioneField.getText();
+
+            if ("Cliente".equals(userType)) {
+                if (registerCli(nome, cognome, username, password, numeroTelefono, eta, mail, sesso.charAt(0))) {
+                    JOptionPane.showMessageDialog(null, "Cliente registrato con successo");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Errore nella registrazione del cliente");
+                }
+            } else if ("Nutrizionista".equals(userType)) {
+                if (registerNut(nome, cognome, username, password, numeroTelefono, eta, mail, sesso.charAt(0), specializzazione)) {
+                    JOptionPane.showMessageDialog(null, "Nutrizionista registrato con successo");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Errore nella registrazione del nutrizionista");
+                }
+            }
+        });
+
+        backButton.addActionListener(e -> {
+            CardLayout cl = (CardLayout) getLayout();
+            cl.show(this, "Login");
+        });
+
+        gbc.gridx = 0;
+        gbc.gridy = 10;
+        gbc.gridwidth = 2;
+        panel.add(registerButton, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 11;
+        gbc.gridwidth = 2;
+        panel.add(backButton, gbc);
+
+        return panel;
+    }
     // Metodo per creare il pannello di login
     private JPanel createLoginPanel() {
         JPanel panel = new JPanel(new GridBagLayout());
@@ -162,59 +315,12 @@ public class LoginPanel extends JPanel implements PanelChangeSubject{
         return panel;
     }
 
-    // Metodo per creare il pannello di registrazione
-    private JPanel createRegisterPanel() {
-        JPanel panel = new JPanel(new GridBagLayout());
-        panel.setBackground(Constants.BG_COLOR);
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 5, 5, 5);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-
-        // Campi di testo per la registrazione
-        newUsernameField = new JTextField(15);
-        newPasswordField = new JPasswordField(15);
-        createAccountButton = createStyledButton("Create Account");
-        backButton = createStyledButton("Back to Login");
-
-        styleTextField(newUsernameField);
-        styleTextField(newPasswordField);
-
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        panel.add(createStyledLabel("New Username:"), gbc);
-
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        panel.add(newUsernameField, gbc);
-
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        panel.add(createStyledLabel("New Password:"), gbc);
-
-        gbc.gridx = 1;
-        gbc.gridy = 1;
-        panel.add(newPasswordField, gbc);
-
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.gridwidth = 2;
-        panel.add(createAccountButton, gbc);
-
-        gbc.gridx = 0;
-        gbc.gridy = 3;
-        gbc.gridwidth = 2;
-        panel.add(backButton, gbc);
-
-        return panel;
-    }
-
     // Metodo di autenticazione
     private boolean authenticateCli(final String username, final String password) {
         return controller.loginClient(username, password);
     }
-    // Metodo di registrazione
-    private boolean registerCli(final String username, final String password) {
-        return false;
+    private boolean registerCli(final String nome, final String cognome, final String username, final String password, final String numeroTelefono, final int eta, final String mail, final char sesso) {
+        return controller.registerClient(nome, cognome, username, password, numeroTelefono, eta, mail, sesso);
     }
 
     // Metodo di autenticazione
@@ -222,10 +328,9 @@ public class LoginPanel extends JPanel implements PanelChangeSubject{
         return controller.loginNut(username, password);
     }
     // Metodo di registrazione
-    private boolean registerNut(final String username, final String password) {
-        return false;
+    private boolean registerNut(final String nome, final String cognome, final String username, final String password, final String numeroTelefono, final int eta, final String mail, final char sesso, final String specializzazione) {
+        return controller.registerNutrizionista(nome, cognome, username, password, numeroTelefono, eta, mail, sesso, specializzazione);
     }
-
     // Metodo per stilizzare un JLabel
     private JLabel createStyledLabel(String text) {
         JLabel label = new JLabel(text);

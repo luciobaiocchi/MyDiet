@@ -54,33 +54,47 @@ public class Controller {
 
     public Nutrizionist getNutrizionist(final String username) {
         try {
-            return dao.getNutInfo(username);
+            Nutrizionist nut = dao.getNutInfo(username);
+            List<Tariffa> tar = dao.getNutTarif(username);
+            if (tar != null){
+                nut.updateTariffa(tar);
+            }
+            return nut;
         } catch (SQLException e) {
             return null;
         }
     }
 
-    public void registerClient(final String nome,
-                      final String cognome,
-                      final String username,
-                      final String password,
-                      final int numeroTelefono,
-                      final int eta,
-                      final String mail,
-                      final char sesso){
+    public boolean registerClient(final String nome,
+                                  final String cognome,
+                                  final String username,
+                                  final String password,
+                                  final String numeroTelefono,
+                                  final int eta,
+                                  final String mail,
+                                  final char sesso){
         if (dao.registerClient(nome, cognome, username, password, numeroTelefono, eta, mail, sesso)){
             System.out.println("Registrazione avvenuta con successo");
+            return true;
         } else {
             System.out.println("Registrazione fallita");
         };
+        return false;
     }
 
-    public void registerNutrizionist (final Nutrizionist nutrizionist) throws SQLException {
-        if (dao.registerNutrizionist(nutrizionist)){
-            System.out.println("Registrazione avvenuta con successo");
-        } else {
-            System.out.println("Registrazione fallita");
-        };
+    public boolean registerNutrizionista(String nome, String cognome, String username, String password, String numeroTelefono, int eta, String mail, char sesso, String specializzazione) {
+    Nutrizionist nutrizionist = new Nutrizionist(specializzazione, nome, cognome, username, password, numeroTelefono, mail, Character.toString(sesso), "0", "0");
+        try {
+            if (dao.registerNutrizionist(nutrizionist)) {
+                System.out.println("Registrazione avvenuta con successo");
+                return true;
+            } else {
+                System.out.println("Registrazione fallita");
+                return false;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public boolean loginClient(final String username, final String password) {
@@ -140,11 +154,13 @@ public class Controller {
 
     public Dieta getDiet() {
         try {
-            System.out.println(dao.getRowDiet(userLogged.getCli().username()));
-            return dietBuilder.buildDiet(userLogged.getCli().username());
+            if (dao.getRowDiet(userLogged.getCli().username()) != null){
+                return dietBuilder.buildDiet(userLogged.getCli().username());
+            }
         } catch (SQLException e) {
             return null;
         }
+        return null;
     }
     public Optional<List<PercorsoFormazione>> getNutFormation(){
         try {
@@ -186,6 +202,18 @@ public class Controller {
         return dao.addPercorsoFormazione(percorso, userLogged.getNut().getUsername());
     }
 
+    public boolean isClientOfNutritionist(String clientUsername, String nutritionistUsername) {
+        // Retrieve the list of clients for the given nutritionist
+        List<String> clientUsernames = null;
+        try {
+            clientUsernames = dao.getClientUsernames(nutritionistUsername);
+        } catch (SQLException e) {
+            return false;
+        }
+        // Check if the client's username is in the list
+        return clientUsernames.contains(clientUsername);
+    }
+
     public List<String> getClientUsernames() {
         try {
             return dao.getClientUsernames(userLogged.getNut().getUsername());
@@ -213,4 +241,11 @@ public class Controller {
     public boolean saveClientUpdate(String username, String data, String descrizione, int peso, int circPuntoVita, int circBraccio, int circGambe) {
     return dao.saveClientUpdate(username, data, descrizione, peso, circPuntoVita, circBraccio, circGambe);
 }
+
+    public boolean saveReview(String clientUsername, String nutritionistUsername, String description, int stars) {
+        Optional<String> optionalDescription = Optional.ofNullable(description);
+        return dao.saveReview(clientUsername, nutritionistUsername, optionalDescription, stars);
+    }
+
+
 }
