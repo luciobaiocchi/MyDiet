@@ -312,6 +312,8 @@ END$$
 
 DELIMITER ;
 
+
+
 DELIMITER $$
 
 CREATE TRIGGER check_3_meals
@@ -409,7 +411,7 @@ INSERT INTO CLIENTE (Numero_di_telefono, Mail, Eta, Username, Nome_, Cognome, Pa
 VALUES
 	(0, 'admin.com', 0, 'admin', 'nome', 'cognome', '1234', 'M'),
 	(456782012, 'elisascalabrini@gmail.com', 21, 'ellister03', 'Elisa', 'Scalabrini', 'ellister123', 'F'),
-    (456789012, 'cliente4@example.com', 32, 'cliente4', 'Giacomo', 'Verdi', '1', 'M'),
+    (456789012, 'cliente4@example.com', 32, 'cliente4', 'Giacomo', 'Verdi', '123', 'M'),
     (567890123, 'cliente5@example.com', 27, 'cliente5', 'Elisa', 'Rossi', 'password456', 'F'),
     (678901234, 'cliente6@example.com', 31, 'cliente6', 'Roberto', 'Bianchi', 'password789', 'M'),
     (789012345, 'cliente7@example.com', 29, 'cliente7', 'Giulia', 'Verdi', 'password123', 'F'),

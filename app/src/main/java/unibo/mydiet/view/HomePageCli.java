@@ -140,23 +140,28 @@ public class HomePageCli extends HomePage{
 
 
     private void showNutProfile(String username) {
-        // Retrieve the nutritionist details from the controller
-        Nutrizionist nutritionist = controller.getNutrizionist(username);
-        if (nutritionist != null) {
-            // Create a panel to hold the profile table, tariff table, and action panel
-            JPanel profilePanel = new JPanel();
-            profilePanel.setLayout(new BorderLayout());
+    // Retrieve the nutritionist details from the controller
+    Nutrizionist nutritionist = controller.getNutrizionist(username);
+    if (nutritionist != null) {
+        // Create a panel to hold the profile table, tariff table, and action panel
+        JPanel profilePanel = new JPanel();
+        profilePanel.setLayout(new BorderLayout());
 
-            // Display the nutritionist profile
-            JTable nutTable = TableFactory.getNutProfileNopsw(nutritionist);
-            profilePanel.add(new JScrollPane(nutTable), BorderLayout.NORTH);
+        // Display the nutritionist profile
+        JTable nutTable = TableFactory.getNutProfileNopsw(nutritionist);
+        profilePanel.add(new JScrollPane(nutTable), BorderLayout.NORTH);
 
-            // Add tariff table
-            JTable tariffTable = TableFactory.getTariffTable(nutritionist);
-            JScrollPane tariffScrollPane = new JScrollPane(tariffTable);
-            tariffScrollPane.setPreferredSize(tariffTable.getPreferredSize());
-            profilePanel.add(tariffScrollPane, BorderLayout.CENTER);
+        // Add tariff table
+        JTable tariffTable = TableFactory.getTariffTable(nutritionist);
+        JScrollPane tariffScrollPane = new JScrollPane(tariffTable);
+        tariffScrollPane.setPreferredSize(tariffTable.getPreferredSize());
+        profilePanel.add(tariffScrollPane, BorderLayout.CENTER);
 
+        // Check if the client is already a client of the nutritionist
+        Client client = controller.getUserLogged().get().getCli();
+        boolean isClientOfNutritionist = controller.isClientOfNutritionist(client.username(), username);
+
+        if (!isClientOfNutritionist) {
             // Add duration selection and start path button
             JPanel actionPanel = new JPanel();
             JLabel durationLabel = new JLabel("Durata (mesi):");
@@ -168,26 +173,20 @@ public class HomePageCli extends HomePage{
             actionPanel.add(startPathButton);
 
             profilePanel.add(actionPanel, BorderLayout.SOUTH);
-
-            // Check if the client is already a client of the nutritionist
-            Client client = controller.getUserLogged().get().getCli();
-            boolean isClientOfNutritionist = controller.isClientOfNutritionist(client.username(), username);
-
-            if (isClientOfNutritionist) {
-                // Add review panel
-                ReviewPanel reviewPanel = new ReviewPanel(controller, username);
-                profilePanel.add(reviewPanel, BorderLayout.NORTH);
-            }
-
-            // Set the profile panel as the center panel
-            setCenterPanel(profilePanel);
-            profilePanel.revalidate();
-            profilePanel.repaint();
         } else {
-            JOptionPane.showMessageDialog(null, "Nutrizionista non trovato");
+            // Add review panel
+            ReviewPanel reviewPanel = new ReviewPanel(controller, username);
+            profilePanel.add(reviewPanel, BorderLayout.NORTH);
         }
-    }
 
+        // Set the profile panel as the center panel
+        setCenterPanel(profilePanel);
+        profilePanel.revalidate();
+        profilePanel.repaint();
+    } else {
+        JOptionPane.showMessageDialog(null, "Nutrizionista non trovato");
+    }
+}
 
 
     private void addNutHigerRating() {

@@ -10,8 +10,6 @@ plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     application
     java
-    id("org.danilopianini.gradle-java-qa") version "1.38.0"
-    id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
 repositories {
@@ -32,7 +30,7 @@ dependencies {
     //https://mvnrepository.com/artifact/com.github.lgooddatepicker/LGoodDatePicker
     //implementation("com.github.lgooddatepicker:LGoodDatePicker:11.2.1")
     // https://mvnrepository.com/artifact/com.github.spotbugs/spotbugs-annotations
-    implementation("com.github.spotbugs:spotbugs-annotations:4.8.4")
+    //implementation("com.github.spotbugs:spotbugs-annotations:4.8.4")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
