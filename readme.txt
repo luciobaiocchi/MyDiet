@@ -14,20 +14,16 @@ In alternativa per eseguire dalla cartella root:
 java -jar ./app/build/libs/app-all.jar
 
 DBMS:
-Come DBMS è stata usata l'alternativa open source di MySQL
-MariaDB, quindi è necessario installarlo nella macchina per
-poter utilizzare la connettività locale.
-Bisogna quindi creare su MariaDB l'utente "cinemgr" con la password "panettone!"
-ATTENZIONE, su Linux è necessario specificare "lower_case_table_names=1"
-nel file di configurazione di MariaDB.
+Come DBMS è stato usato MySQL
+
 
 Per creare le tabelle e inserire dei dati di prova vengono 
-forniti appositi file .sql e .ddl nella cartella "SQL" consegnata.
+forniti appositi file .sql e .ddl nella cartella "SQL" consegnata, all'interno dell'elaborato.
 
 Una volta nell'app:
-Qui vengono elencate le password di accesso degli utenti principali:
-"admin" = "panettone!"
-"luca" = "granella"
+Qui vengono elencate le password di accesso degli utenti principali, dei quali esistono le diete e relative parti:
+"nutrizionista4" = "123"
+"cliente4" = "123"
 
 E' comunque possibile registrare altri utenti mediante le funzionalità
 fornite dall'applicazione.
