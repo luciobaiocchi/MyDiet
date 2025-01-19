@@ -80,3 +80,21 @@ Built on **MVC (Model-View-Controller)**:
 4. Run the project with Gradle.
 
 ---
+
+## Some demo photos
+
+### CLient profile info
+![](img/inizio%20percorso.png)
+### Login
+![](img/login.png)
+### Add new diet
+![](img/modifica%20dieta.png)
+### New prices
+![](img/modifica%20tariffario.png)
+### Visualize diet
+![](img/visualizzazione%20dieta.png)
+### Nutrizionist List
+![](img/visualizzazione%20nutrizionisti.png)
+### Objective List
+![](img/visualizzazione%20obbiettivi.png)
+
